@@ -64,13 +64,13 @@ public class DefaultFXValidationHandler implements AnnotationHandler<FXRequired>
    *       handler.</li>
    * </ol>
    *
-   * @param controller
-   * @param field
-   * @param validation The annotation - currently not used here.
+   * @param controller The controller of the fxml UI
+   * @param field The field referencing the UI control
+   * @param validation The annotation.
    */
   @Override
   public void handle(Object controller, Field field, FXRequired validation) {
-    System.out.println("DefaultFXValidationHandler " + controller + ", " + field.getName() + " " + validation.getClass().getName());
+//    System.out.println("DefaultFXValidationHandler " + controller + ", " + field.getName() + " " + validation.getClass().getName());
     try {
 
       FXRequired fxValidation = field.getAnnotation(FXRequired.class);
@@ -134,8 +134,11 @@ public class DefaultFXValidationHandler implements AnnotationHandler<FXRequired>
    * Mark the given control according to the validation success as validated or
    * failed. Currently, this is done by adding or removing stye classes.
    *
-   * @param control
-   * @param valid
+   * @param control The UI control
+   * @param valid Whether the input was valid or not, i.e., whether the input
+   *        state of the control is valid or not.
+   * @param errormessage The error message to display if the control's input is
+   *        not valid. May be left to null if no message should be displayed.
    */
   public static void mark(Control control, boolean valid, String errormessage){
     if (valid) {
@@ -180,7 +183,7 @@ public class DefaultFXValidationHandler implements AnnotationHandler<FXRequired>
       validator.validate(control, fxValidation);
       mark(control, true, null);
 //      ValidatorService.hideHint(control, fxValidation);
-    } catch (Exception ex) {
+    } catch (ValidationException ex) {
       mark(control, false, ex.getMessage());
 //      ValidatorService.showHint(control, fxValidation);
     }

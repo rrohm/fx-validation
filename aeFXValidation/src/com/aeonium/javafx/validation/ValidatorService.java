@@ -97,9 +97,9 @@ public class ValidatorService {
 
 
   /**
-   *
-   * @param targetControl
-   * @param validatedControls
+   * @deprecated  Not implemented yet, work in progress.
+   * @param targetControl TBD
+   * @param validatedControls TBD
    */
   public static void bindValidators(Control targetControl, Control... validatedControls) {
     System.out.println("ValidatorService.bindValidators " + targetControl);
@@ -131,7 +131,7 @@ public class ValidatorService {
     fxActionManager.addHandler(FXValidationChecked.class, new DefaultFXValidationCheckedHandler());
    * </pre>
    *
-   * @return
+   * @return The newly created and initialized action manager.
    */
   public static FXActionManager createActionManager(){
     FXActionManager fxActionManager = new FXActionManager();
@@ -145,7 +145,7 @@ public class ValidatorService {
    * Use this method if you have already an instance of FXActionManager and you
    * want to initialize it for using aeFXValidation annotations.
    *
-   * @param fxActionManager
+   * @param fxActionManager The action manager instance
    */
   public static void initializeActionManager(FXActionManager fxActionManager) {
     final DefaultFXValidationHandler1 defaultFXValidationHandler1 = new DefaultFXValidationHandler1();
@@ -184,11 +184,10 @@ public class ValidatorService {
       *
    * </pre>
    *
-   * @param parent
-   * @param controller
-   * @throws Exception
+   * @param parent The parent node to scan the tree down from.
+   * @param controller The controller to initialize.
    */
-  public static void initialize(Parent parent, Object controller) throws Exception {
+  public static void initialize(Parent parent, Object controller) {
     LabelService.initialize(parent);
     FXActionManager actionManager = createActionManager();
     actionManager.initActions(controller);
@@ -199,10 +198,9 @@ public class ValidatorService {
   /**
    * Initialize validation in the given controller object.
    *
-   * @param controller
-   * @throws java.lang.Exception, e.g., when a field is annotated with a validation constraint and has no label for it.
+   * @param controller The controller to initialize
    */
-  public static void initialize(Object controller) throws Exception {
+  public static void initialize(Object controller) {
     List<Control> checkedControls = checkedControlMap.get(controller);
     List<Control> validatedControls = validatedControlMap.get(controller);
     List<BooleanProperty> checkedProperties = checkedPropertyMap.get(controller);
@@ -212,7 +210,7 @@ public class ValidatorService {
     for (Control control : validatedControls) {
       List<Label> labels = LabelService.getLabelsFor(control);
       if (labels == null) {
-        throw new Exception("No labels for control: " + control);
+        throw new NullPointerException("No labels for control: " + control);
       }
       // hide validation message labels:
       for (Label label : labels) {
@@ -243,9 +241,9 @@ public class ValidatorService {
    * to be controlled by the validation service: their disable property gets
    * bound to the combined result of all validation constraints.
    *
-   * @param checkedControls
-   * @param validatedControls
-   * @throws UnsupportedOperationException
+   * @param checkedControls The list of checked controls
+   * @param validatedControls The list of validated controls
+   * @throws UnsupportedOperationException Thrown if control is not an instance of ButtonBase
    */
   private static void initializeCheckedControls(List<Control> checkedControls, List<Control> validatedControls) throws UnsupportedOperationException {
     if (checkedControls != null) {
@@ -299,8 +297,8 @@ public class ValidatorService {
    * Initialize checked boolean properties, i.e., bind their value to the
    * combined result of all validation constraints.
    *
-   * @param checkedProperties
-   * @param validatedControls
+   * @param checkedProperties The list of checked properties
+   * @param validatedControls The list of validated controles
    */
   private static void initializeCheckedProperties(List<BooleanProperty> checkedProperties, List<Control> validatedControls) {
     if (checkedProperties != null) {
@@ -346,10 +344,10 @@ public class ValidatorService {
   /**
    * Process all validators that belong to the given controller.
    *
-   * @param controller
-   * @throws Exception
+   * @param controller The controller
+   * @throws ValidationException The Exception signalling a failed validation
    */
-  public static void validate(Object controller) throws Exception {
+  public static void validate(Object controller) throws ValidationException {
 
     List<Control> validatedControls = validatedControlMap.get(controller);
 
@@ -368,10 +366,10 @@ public class ValidatorService {
   /**
    *
    * @deprecated Experimental - not for use!
-   * @param control
-   * @param fxValidation
+   * @param control The control
+   * @param annotation The annotation that should provide the hint message
    */
-  static void hideHint(Control control, Annotation fxValidation) {
+  static void hideHint(Control control, Annotation annotation) {
     Popup popup = popupMap.get(control);
     if (popup != null && popup.isShowing()) {
       popup.hide();
@@ -380,8 +378,8 @@ public class ValidatorService {
 
   /**
    * @deprecated Experimental - not for use!
-   * @param control
-   * @param annotation
+   * @param control The control to show the hint for.
+   * @param annotation The annotation providing the text message
    */
   public static void showHint(Control control, Annotation annotation) {
     Popup popup = popupMap.get(control);
@@ -417,8 +415,8 @@ public class ValidatorService {
   /**
    * Register a validated control with it's controler.
    *
-   * @param controller
-   * @param control
+   * @param controller The controller
+   * @param control The UI control to register.
    */
   public static void registerValidatedControl(Object controller, Control control) {
     List<Control> list = validatedControlMap.get(controller);

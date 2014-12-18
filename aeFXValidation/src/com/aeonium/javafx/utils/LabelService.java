@@ -55,7 +55,7 @@ public class LabelService {
   /**
    * Find the first label that is a label for this control.
    *
-   * @param node
+   * @param node The node to search the label for.
    * @return The first Label mapped to the node, or null
    * @deprecated Use getLabelsFor() for retrieving <b>all</b> Labels that may reference the node.
    */
@@ -73,8 +73,8 @@ public class LabelService {
 
   /**
    * Get all labels that reference the given node.
-   * @param node
-   * @return
+   * @param node The node to search labels for.
+   * @return A list of labels that reference the node.
    */
   public static List<Label> getLabelsFor(Node node) {
     return labelForNodeMap.get(node);
@@ -92,7 +92,7 @@ public class LabelService {
    * <li></li>
    * </ul>
    *
-   * @param scene
+   * @param scene The scene to scan
    */
   public static void initialize(Scene scene) {
     initialize(scene.getRoot());
@@ -102,8 +102,8 @@ public class LabelService {
    * Initialize all labels that are registered as label for a node.
    *
    * @since 1.1 Bind label's disable property to disabled property of node.
-   * @see initialize(Scene scene)
-   * @param root
+   * @see #initialize(Scene scene)
+   * @param root The root node to scan from
    */
   public static void initialize(Parent root) {
     Scene scene = root.getScene();
@@ -153,8 +153,8 @@ public class LabelService {
    * <p>Special treatment is required in this method for TabPane, since the Tab
    * instances are not elements or the children collection. </p>
    *
-   * @param children
-   * @param list
+   * @param children List of child nodes
+   * @param list .
    */
   private static void findLabels(ObservableList<Node> children, List<Node> list) {
     for (Node node : children) {
@@ -204,12 +204,12 @@ public class LabelService {
 
   /**
    * A variant of findLabels that tracks the scene in the parameter list -
-   * normally each node in the scene shoul know it's scene, but ist seems like
-   * node in a TitledPane to not.
+   * normally each node in the scene should know it's scene, but ist seems like
+   * node in a TitledPane does not.
    *
-   * @param scene
-   * @param children
-   * @param list
+   * @param scene The current scene
+   * @param children Observable list of child nodes
+   * @param list .
    */
   private static void findLabels(Scene scene, ObservableList<Node> children, List<Node> list) {
     for (Node node : children) {

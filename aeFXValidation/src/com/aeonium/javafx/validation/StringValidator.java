@@ -39,7 +39,7 @@ public class StringValidator extends FXAbstractValidator<TextInputControl, FXStr
   }
 
   @Override
-  public void validate(TextInputControl control, FXString annotation) throws Exception {
+  public void validate(TextInputControl control, FXString annotation) throws ValidationException {
 //    System.out.println("StringValidator.validate " + annotation);
     // shortcut: do not check if disabled.
     if (control.isDisabled()) {
@@ -58,7 +58,7 @@ public class StringValidator extends FXAbstractValidator<TextInputControl, FXStr
       if (annotation.messageMinLength().contains("%d")) {
         msg = String.format(annotation.messageMinLength(), annotation.minLength());
       }
-      throw new Exception(msg);
+      throw new ValidationException(msg);
     }
 
     if (annotation.maxLength() > 0) {
@@ -70,7 +70,7 @@ public class StringValidator extends FXAbstractValidator<TextInputControl, FXStr
       if (annotation.messageMaxLength().contains("%d")) {
         msg = String.format(annotation.messageMaxLength(), annotation.maxLength());
       }
-      throw new Exception(msg);
+      throw new ValidationException(msg);
     }
 
     if (annotation.pattern().length() > 0) {

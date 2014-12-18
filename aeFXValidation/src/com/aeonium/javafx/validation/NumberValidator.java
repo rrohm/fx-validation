@@ -22,19 +22,21 @@ import com.aeonium.javafx.validation.annotations.FXNumber;
 import javafx.scene.control.TextInputControl;
 
 /**
+ * Checks whether input of a text control may be parsed as a double precision
+ * number.
  *
  * @author Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;
  */
 public class NumberValidator extends FXAbstractValidator<TextInputControl, FXNumber> {
 
   @Override
-  public void validate(TextInputControl control, FXNumber annotation) throws Exception {
+  public void validate(TextInputControl control, FXNumber annotation) throws ValidationException {
     // shortcut: do not check if disabled.
     if (control.isDisabled()) {
       this.isValid.set(true);
       return;
     }
-    
+
     boolean valid = false;
 
     try {
@@ -48,7 +50,7 @@ public class NumberValidator extends FXAbstractValidator<TextInputControl, FXNum
     this.isValid.set(valid);
 
     if (!valid) {
-      throw new Exception(annotation.message());
+      throw new ValidationException(annotation.message());
     }
   }
 

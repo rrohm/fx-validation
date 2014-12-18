@@ -43,9 +43,14 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyEvent;
 
 /**
- * Handler for FXRequired, FXString validation annotations: it by default also
- * appends an asterisk postfix to all Labels of constrained controls.
- *
+ * Handler for the following validation constraints (i.e., annotations):
+ * <ul>
+ *   <li>FXRequired,</li>
+ *   <li>FXString, </li>
+ *   <li>FXNumber, </li>
+ *   <li>FXNotNull. </li>
+ * </ul>
+ * It by default also appends an asterisk postfix to all Labels of constrained controls.
  *
  * @author Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;
  */
@@ -79,9 +84,9 @@ public class DefaultFXValidationHandler1 implements AnnotationHandler<Annotation
    * handler.</li>
    * </ol>
    *
-   * @param controller
-   * @param field
-   * @param validation The annotation - currently not used here.
+   * @param controller The controller
+   * @param field The field referencing the UI control
+   * @param validation The annotation.
    */
   @Override
   public void handle(Object controller, Field field, Annotation validation) {
@@ -94,6 +99,11 @@ public class DefaultFXValidationHandler1 implements AnnotationHandler<Annotation
       }
 
       Control control = (Control) field.get(controller);
+      if (control == null) {
+        throw new NullPointerException("JavaFX Control for field " + field.getName() + " not found.");
+      }
+
+
       List<Label> labelsFor = LabelService.getLabelsFor(control);
       if (labelsFor != null) {
         for (Label label : labelsFor) {
@@ -185,9 +195,9 @@ public class DefaultFXValidationHandler1 implements AnnotationHandler<Annotation
    * Mark the given control according to the validation success as validated or
    * failed. Currently, this is done by adding or removing stye classes.
    *
-   * @param control
-   * @param valid
-   * @param errormessage
+   * @param control The UI control
+   * @param valid Whether the state of the control is valid or not.
+   * @param errormessage The error message to display if the control state is not valid.
    */
   public static void mark(Control control, boolean valid, String errormessage) {
     if (valid) {
@@ -231,17 +241,17 @@ public class DefaultFXValidationHandler1 implements AnnotationHandler<Annotation
    * Trigger the actual validation of a control with a given validator in the
    * way described in the fxValidation annotation.
    *
-   * @param validator
-   * @param control
-   * @param fxValidation
+   * @param validator The validator
+   * @param control The control
+   * @param annotation The annotation
    */
-  private void doValidate(FXAbstractValidator validator, Control control, Annotation fxValidation) {
+  private void doValidate(FXAbstractValidator validator, Control control, Annotation annotation) {
     System.out.println("doValidate " + control);
     try {
-      validator.validate(control, fxValidation);
+      validator.validate(control, annotation);
       mark(control, true, null);
 //      ValidatorService.hideHint(control, fxValidation);
-    } catch (Exception ex) {
+    } catch (ValidationException ex) {
       String message = ex.getMessage();
       if (ValidatorService.getBundle() != null) {
         ResourceBundle bundle = ValidatorService.getBundle();

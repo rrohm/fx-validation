@@ -41,13 +41,14 @@ public class RequiredValidator extends FXAbstractValidator<TextInputControl, FXR
   }
 
   /**
-   * Validate a text inout control.
+   * Validate a text input control.
    *
-   * @param control
-   * @throws java.lang.Exception
+   * @param control The text input control
+   * @throws com.aeonium.javafx.validation.ValidationException The exception to
+   *         be thrown when the control input is not valid.
    */
   @Override
-  public void validate(TextInputControl control, FXRequired annotation) throws Exception {
+  public void validate(TextInputControl control, FXRequired annotation) throws ValidationException {
 //    System.out.println("RequiredValidator.validate " + annotation);
 
     // shortcut: do not check if disabled.
@@ -60,7 +61,7 @@ public class RequiredValidator extends FXAbstractValidator<TextInputControl, FXR
     this.isValid.set(valid);
 
     if (!valid) {
-      throw new Exception(annotation.message());
+      throw new ValidationException(annotation.message());
     }
   }
 }

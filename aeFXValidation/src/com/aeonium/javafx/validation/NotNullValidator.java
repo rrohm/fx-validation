@@ -25,6 +25,8 @@ import javafx.scene.control.Control;
 import javafx.scene.input.KeyEvent;
 
 /**
+ * Checks (currently only) choiceboxes and comboboxes whether they have a valid
+ * selection value not equaling null.
  *
  * @author Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;
  */
@@ -55,7 +57,7 @@ public class NotNullValidator extends  FXAbstractValidator<Control, FXNotNull> {
 
 
   @Override
-  public void validate(Control control, FXNotNull annotation) throws Exception {
+  public void validate(Control control, FXNotNull annotation) throws ValidationException {
     System.out.println("NotNullValidator.validate " + annotation);
 // shortcut: do not check if disabled.
     if (control.isDisabled()) {
@@ -77,7 +79,7 @@ public class NotNullValidator extends  FXAbstractValidator<Control, FXNotNull> {
     this.isValid.set(valid);
 
     if (!valid) {
-      throw new Exception(annotation.message());
+      throw new ValidationException(annotation.message());
     }
   }
 

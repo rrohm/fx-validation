@@ -68,22 +68,24 @@ public abstract class FXAbstractValidator<T extends Control, A extends Annotatio
    * validation constraints annotated at the field. This method is meant to
    * set the value of the isValid property - also before it throws an exception.
    *
-   * @param control
-   * @param annotation
-   * @throws java.lang.Exception Throws an exception when validation fails. The
+   * @param control The control
+   * @param annotation The annotation
+   * @throws ValidationException Throws an exception when validation fails. The
    *                             message of the exception should be specific
    *                             to the reason of failure.
    */
-  public abstract void validate(T control, A annotation) throws Exception;
+  public abstract void validate(T control, A annotation) throws ValidationException;
 
   /**
    * An overloaded version of <code>validate(T control, A annotation)</code>
    * that uses the referenced control and annotation - use this as default
    * method to trigger validation.
    *
-   * @throws Exception
+   * @throws ValidationException Throws an exception when validation fails. The
+   *                             message of the exception should be specific
+   *                             to the reason of failure.
    */
-  public void validate() throws Exception {
+  public void validate() throws ValidationException {
     this.validate(this.control, this.annotation);
   }
 
