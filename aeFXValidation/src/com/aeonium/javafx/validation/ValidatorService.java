@@ -205,18 +205,20 @@ public class ValidatorService {
     List<Control> validatedControls = validatedControlMap.get(controller);
     List<BooleanProperty> checkedProperties = checkedPropertyMap.get(controller);
 
-    System.out.println("initialize " + controller);
+//    System.out.println("initialize " + controller);
 
-    for (Control control : validatedControls) {
-      List<Label> labels = LabelService.getLabelsFor(control);
-      if (labels == null) {
-        throw new NullPointerException("No labels for control: " + control);
-      }
-      // hide validation message labels:
-      for (Label label : labels) {
-        if (label.getStyleClass().contains(AEFX_VALIDATION_MSG)) {
-          label.setVisible(false);
-          label.setManaged(false);
+    if (validatedControls != null) {
+      for (Control control : validatedControls) {
+        List<Label> labels = LabelService.getLabelsFor(control);
+        if (labels == null) {
+          throw new NullPointerException("No labels for control: " + control);
+        }
+        // hide validation message labels:
+        for (Label label : labels) {
+          if (label.getStyleClass().contains(AEFX_VALIDATION_MSG)) {
+            label.setVisible(false);
+            label.setManaged(false);
+          }
         }
       }
     }
@@ -231,10 +233,10 @@ public class ValidatorService {
 //
 //    }
 
-    initializeCheckedControls(checkedControls, validatedControls);
+      initializeCheckedControls(checkedControls, validatedControls);
 
-    initializeCheckedProperties(checkedProperties, validatedControls);
-  }
+      initializeCheckedProperties(checkedProperties, validatedControls);
+    }
 
   /**
    * Iterate through a list of "checked" controls, i.e., of controls that have
@@ -260,7 +262,7 @@ public class ValidatorService {
             List<FXAbstractValidator> validators = validatorMap.get(validatedControl);
 
             for (FXAbstractValidator validator : validators) {
-              System.out.println("INIT " + validator);
+//              System.out.println("INIT " + validator);
               validatorsOK.add(validator.isValid);
             }
           }
@@ -278,7 +280,7 @@ public class ValidatorService {
 
             @Override
             protected boolean computeValue() {
-              System.out.println("\ncomputeValue CheckedControl " + this.bools);
+//              System.out.println("\ncomputeValue CheckedControl " + this.bools);
               boolean result = true;
               for (ObservableBooleanValue b : bools) {
                 result = result && b.get();
@@ -329,7 +331,7 @@ public class ValidatorService {
 
           @Override
           protected boolean computeValue() {
-            System.out.println("computeValue CheckedProperty " + this.bools);
+//            System.out.println("computeValue CheckedProperty " + this.bools);
             boolean result = true;
             for (ObservableBooleanValue b : bools) {
               result = result && b.get();
@@ -351,7 +353,7 @@ public class ValidatorService {
 
     List<Control> validatedControls = validatedControlMap.get(controller);
 
-    System.out.println("validate " + controller);
+//    System.out.println("validate " + controller);
 
     for (Control validatedControl : validatedControls) {
       // ... for each validator - get validators

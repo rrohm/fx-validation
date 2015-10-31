@@ -33,7 +33,7 @@
 
 Label.aefx-validation-error {
   -fx-text-fill: #f30;
-  -fx-background-color: none;
+  -fx-background-color: null;
   -fx-font-weight: bold;
 }
 

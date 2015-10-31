@@ -58,7 +58,7 @@ public class NotNullValidator extends  FXAbstractValidator<Control, FXNotNull> {
 
   @Override
   public void validate(Control control, FXNotNull annotation) throws ValidationException {
-    System.out.println("NotNullValidator.validate " + annotation);
+//    System.out.println("NotNullValidator.validate " + annotation);
 // shortcut: do not check if disabled.
     if (control.isDisabled()) {
       this.isValid.set(true);
@@ -70,12 +70,16 @@ public class NotNullValidator extends  FXAbstractValidator<Control, FXNotNull> {
     if (control instanceof ChoiceBox) {
       ChoiceBox choiceBox = (ChoiceBox) control;
       valid = choiceBox.getValue() != null;
+      
+      System.err.println("choiceBox.getValue()                            " + choiceBox.getValue());
+      System.err.println("choiceBox.getSelectionModel().getSelectedItem() " + choiceBox.getSelectionModel().getSelectedItem());
+      
     } else if (control instanceof ComboBoxBase) {
       ComboBoxBase comboBoxBase = (ComboBoxBase) control;
       valid = comboBoxBase.getValue() != null;
     }
 
-    System.out.println("NotNullValidator.validate " + valid);
+//    System.out.println("NotNullValidator.validate " + valid);
     this.isValid.set(valid);
 
     if (!valid) {

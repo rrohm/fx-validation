@@ -200,12 +200,20 @@ public class DefaultFXValidationHandler1 implements AnnotationHandler<Annotation
    * @param errormessage The error message to display if the control state is not valid.
    */
   public static void mark(Control control, boolean valid, String errormessage) {
+    // TODO Make shure this runs on FX thread
     if (valid) {
       if (control.getStyleClass().contains(ValidatorService.AEFX_VALIDATION_ERROR)) {
         control.getStyleClass().remove(ValidatorService.AEFX_VALIDATION_ERROR);
       }
 
       List<Label> labels = LabelService.getLabelsFor(control);
+      
+      // If there are no labels: bail out, because there would be no chance to 
+      // display a control-specific message (at least not in this version)
+      if (labels == null) {
+        throw new NullPointerException("There are no labels for the control " + control.getId() + ". \nYou need to add a Label and set its labelFor property to the control.");
+      }
+      
       for (Label label : labels) {
         if (label.getStyleClass().contains(ValidatorService.AEFX_VALIDATION_MSG)) {
           label.setVisible(false);
@@ -246,7 +254,7 @@ public class DefaultFXValidationHandler1 implements AnnotationHandler<Annotation
    * @param annotation The annotation
    */
   private void doValidate(FXAbstractValidator validator, Control control, Annotation annotation) {
-    System.out.println("doValidate " + control);
+//    System.out.println("doValidate " + control);
     try {
       validator.validate(control, annotation);
       mark(control, true, null);
