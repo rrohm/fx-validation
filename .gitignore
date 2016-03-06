@@ -9,3 +9,6 @@ aeFXValidationTest/dist/aeFXValidationTest.jnlp
 aeFXValidation/build/**/*
 aeFXValidation/nbproject/private/**/*
 mounts.sh
+aeFXValidationTest/nbproject/UPDATED.TXT
+aeFXValidationTest/nbproject/jfx-impl_backup.xml
+
