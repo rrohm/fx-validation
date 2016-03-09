@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2016 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-
 package com.aeonium.javafx.validation;
 
 import com.aeonium.javafx.validation.annotations.FXRequired;
@@ -24,11 +23,12 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyEvent;
 
 /**
+ * Validate ttext input controls as "required", i.e., they must not be empty.
+ * Validation gets skipped if the control is either disabled or invisible.
  *
  * @author Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;
  */
-public class RequiredValidator extends FXAbstractValidator<TextInputControl, FXRequired>{
-
+public class RequiredValidator extends FXAbstractValidator<TextInputControl, FXRequired> {
 
   public RequiredValidator() {
     super();
@@ -41,23 +41,26 @@ public class RequiredValidator extends FXAbstractValidator<TextInputControl, FXR
   }
 
   /**
-   * Validate a text input control.
+   * Validate a text input control - validation gets skipped if the control is
+   * either disabled or invisible.
    *
    * @param control The text input control
    * @throws com.aeonium.javafx.validation.ValidationException The exception to
-   *         be thrown when the control input is not valid.
+   * be thrown when the control input is not valid.
    */
   @Override
   public void validate(TextInputControl control, FXRequired annotation) throws ValidationException {
-//    System.out.println("RequiredValidator.validate " + annotation);
-
     // shortcut: do not check if disabled.
     if (control.isDisabled()) {
       this.isValid.set(true);
       return;
     }
+    if (!control.isVisible()) {
+      this.isValid.set(true);
+      return;
+    }
 
-    boolean valid =  control.getText().length() > 0;
+    boolean valid = control.getText().length() > 0;
     this.isValid.set(valid);
 
     if (!valid) {

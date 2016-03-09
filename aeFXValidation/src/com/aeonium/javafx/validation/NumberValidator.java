@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2016 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,16 +23,30 @@ import javafx.scene.control.TextInputControl;
 
 /**
  * Checks whether input of a text control may be parsed as a double precision
- * number.
+ * number and optionally whether the value does not violate min an max range
+ * constraints. Validation gets skipped if the control is either disabled or
+ * invisible.
  *
  * @author Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;
  */
 public class NumberValidator extends FXAbstractValidator<TextInputControl, FXNumber> {
 
+  /**
+   * Check whether the text input could get parsed as a number - validation gets
+   * skipped if the control is either disabled or invisible.
+   *
+   * @param control The control
+   * @param annotation The annotation.
+   * @throws ValidationException
+   */
   @Override
   public void validate(TextInputControl control, FXNumber annotation) throws ValidationException {
     // shortcut: do not check if disabled.
     if (control.isDisabled()) {
+      this.isValid.set(true);
+      return;
+    }
+    if (!control.isVisible()) {
       this.isValid.set(true);
       return;
     }
@@ -41,8 +55,13 @@ public class NumberValidator extends FXAbstractValidator<TextInputControl, FXNum
 
     try {
       Number n = Double.parseDouble(control.getText());
-      if (null != n) {
-        valid = true;
+
+      valid = true;
+      if (annotation.min() != Double.MIN_VALUE) {
+        valid = valid && (n.doubleValue() >= annotation.min());
+      }
+      if (annotation.max() != Double.MAX_VALUE) {
+        valid = valid && (n.doubleValue() <= annotation.max());
       }
     } catch (Exception e) {
       // nothing to do, validator remains invalid.

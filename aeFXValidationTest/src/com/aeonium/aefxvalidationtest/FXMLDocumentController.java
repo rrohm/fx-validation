@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2016 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -65,11 +65,21 @@ public class FXMLDocumentController implements Initializable {
   private TextField tf4;
 
   @FXML
+  @FXString(minLength = 2, maxLength = 5)
+  private TextField tfVisible2;
+
+  @FXML
   private Label label;
 
   @FXML
   private CheckBox cbEnableTf5;
 
+  @FXML
+  private CheckBox cbToggleVisibilityTf2;
+
+  /**
+   * Example: Message ID from the resource bundle gets picked up if present.
+   */
   @FXML
   @FXRequired(message = "validation.messages.required")
   private TextField tf5;
@@ -118,6 +128,7 @@ public class FXMLDocumentController implements Initializable {
     checkedButton.disableProperty().bind(isOK.not());
 
     tf5.disableProperty().bind(cbEnableTf5.selectedProperty().not());
+    tfVisible2.visibleProperty().bind(cbToggleVisibilityTf2.selectedProperty().not());
 
     System.out.println("FXMLDocumentController.initialize OK.");
   }

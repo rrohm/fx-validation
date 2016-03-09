@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2016 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,8 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyEvent;
 
 /**
+ * Check string input, e.g., whether it fits into min and max lengths.
+ * Validation gets skipped if the control is either disabled or invisible.
  *
  * @author Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;
  */
@@ -40,9 +42,12 @@ public class StringValidator extends FXAbstractValidator<TextInputControl, FXStr
 
   @Override
   public void validate(TextInputControl control, FXString annotation) throws ValidationException {
-//    System.out.println("StringValidator.validate " + annotation);
     // shortcut: do not check if disabled.
     if (control.isDisabled()) {
+      this.isValid.set(true);
+      return;
+    }
+    if (!control.isVisible()) {
       this.isValid.set(true);
       return;
     }
@@ -52,6 +57,7 @@ public class StringValidator extends FXAbstractValidator<TextInputControl, FXStr
     if (annotation.minLength() > 0) {
       valid = control.getText().length() >= annotation.minLength();
     }
+
     this.isValid.set(valid);
     if (!valid) {
       String msg = annotation.messageMinLength();

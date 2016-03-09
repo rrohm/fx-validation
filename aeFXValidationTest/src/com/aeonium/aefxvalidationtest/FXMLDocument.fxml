@@ -2,7 +2,7 @@
 
 <!--
 /*
- * Copyright (C) 2014 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2016 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -75,7 +75,7 @@
             </AnchorPane>
           </content>
         </TitledPane>
-        <TitledPane animated="false" collapsible="false" text="Textfield - simple">
+        <TitledPane animated="false" collapsible="false" text="Validierung und Disablement">
           <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="350.0">
               <children>
@@ -89,6 +89,24 @@
                 <fx:reference source="tf5" />
                 <Label labelFor="${tf5}" layoutX="170.0" layoutY="180.0" styleClass="aefx-validation-message" text="validation messate for tf5" />
                 <Label layoutX="30.0" layoutY="40.0" text="Unconstrained Field" />
+                <Label layoutX="28.0" layoutY="115.0" prefHeight="36.0" prefWidth="81.0" text="Conditional Validation" wrapText="true" />
+              </children>
+            </AnchorPane>
+          </content>
+        </TitledPane>
+        <TitledPane animated="false" collapsible="false" text="Validierung und Sichtbarkeit">
+          <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="350.0">
+              <children>
+                <!--<TextField fx:id="tfVisible1" layoutX="170.0" layoutY="35.0" />-->
+                <CheckBox fx:id="cbToggleVisibilityTf2" layoutX="174.0" layoutY="127.0" mnemonicParsing="false" text="hide" />
+                <Label layoutX="30.0" layoutY="161.0" text="Visible/invisible Field" wrapText="true" prefWidth="81.0">
+                  <labelFor>
+                    <TextField fx:id="tfVisible2" layoutX="170.0" layoutY="156.0" />
+                  </labelFor>
+                </Label>
+                <fx:reference source="tfVisible2" />
+                <Label labelFor="${tfVisible2}" layoutX="170.0" layoutY="180.0" styleClass="aefx-validation-message" text="validation messate for tf2" />
                 <Label layoutX="28.0" layoutY="115.0" prefHeight="36.0" prefWidth="81.0" text="Conditional Validation" wrapText="true" />
               </children>
             </AnchorPane>

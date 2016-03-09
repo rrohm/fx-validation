@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2016 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -130,6 +130,10 @@ public class DefaultFXValidationHandler1 implements AnnotationHandler<Annotation
       for (EventType eventType : eventTypes) {
 
         control.disabledProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+          doValidate(validator, control, validation);
+        });
+        
+        control.visibleProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
           doValidate(validator, control, validation);
         });
 

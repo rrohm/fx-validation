@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2016 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -103,6 +103,9 @@ public class DefaultFXValidationHandler implements AnnotationHandler<FXRequired>
             doValidate(validator, control, fxValidation);
           });
 
+          textInputControl.visibleProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            doValidate(validator, control, validation);
+          });
 
           textInputControl.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             // if control aquires focus: get out, only validate if focus lost.

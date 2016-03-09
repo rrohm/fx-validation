@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2016 Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,18 +26,18 @@ import javafx.scene.input.KeyEvent;
 
 /**
  * Checks (currently only) choiceboxes and comboboxes whether they have a valid
- * selection value not equaling null.
+ * selection value not equaling null. Validation gets skipped if the control is
+ * either disabled or invisible.
  *
  * @author Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;
  */
-public class NotNullValidator extends  FXAbstractValidator<Control, FXNotNull> {
+public class NotNullValidator extends FXAbstractValidator<Control, FXNotNull> {
 
   public NotNullValidator() {
     super();
     this.eventTypes.add(KeyEvent.KEY_RELEASED);
 //    this.eventTypes.add(MouseEvent.MOUSE_CLICKED);
   }
-
 
   public NotNullValidator(Control control, FXNotNull annotation) {
     super(control, annotation);
@@ -54,13 +54,14 @@ public class NotNullValidator extends  FXAbstractValidator<Control, FXNotNull> {
     }
   }
 
-
-
   @Override
   public void validate(Control control, FXNotNull annotation) throws ValidationException {
-//    System.out.println("NotNullValidator.validate " + annotation);
 // shortcut: do not check if disabled.
     if (control.isDisabled()) {
+      this.isValid.set(true);
+      return;
+    }
+    if (!control.isVisible()) {
       this.isValid.set(true);
       return;
     }
@@ -70,22 +71,17 @@ public class NotNullValidator extends  FXAbstractValidator<Control, FXNotNull> {
     if (control instanceof ChoiceBox) {
       ChoiceBox choiceBox = (ChoiceBox) control;
       valid = choiceBox.getValue() != null;
-      
-      System.err.println("choiceBox.getValue()                            " + choiceBox.getValue());
-      System.err.println("choiceBox.getSelectionModel().getSelectedItem() " + choiceBox.getSelectionModel().getSelectedItem());
-      
+
     } else if (control instanceof ComboBoxBase) {
       ComboBoxBase comboBoxBase = (ComboBoxBase) control;
       valid = comboBoxBase.getValue() != null;
     }
 
-//    System.out.println("NotNullValidator.validate " + valid);
     this.isValid.set(valid);
 
     if (!valid) {
       throw new ValidationException(annotation.message());
     }
   }
-
 
 }

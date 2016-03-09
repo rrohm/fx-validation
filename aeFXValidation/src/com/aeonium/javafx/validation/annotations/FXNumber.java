@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2016 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -40,9 +40,9 @@ public @interface FXNumber{
 
   public Class<? extends FXAbstractValidator> validation() default NumberValidator.class;
 
-  public double min();
+  public double min() default Double.MIN_VALUE;
 
-  public double max();
+  public double max() default Double.MAX_VALUE;
 
   public String message() default "This field must be a number!";
 }
