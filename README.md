@@ -11,7 +11,7 @@ This example show the loading and initialization of a FXML UI with international
 ```java
   @Override
   public void start(Stage stage) throws Exception {
-    // Get the pre-configurated controller factory:
+    // Get the pre-configured controller factory:
     FXActionManager myActionControllerFactory = ValidatorService.createActionManager();
 
     // Load the FXMl with the controller factory
