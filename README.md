@@ -5,7 +5,7 @@ fx-validation is an extension to fx-actions that lets you do just that: declarat
 
 
 ## Example
-
+```java
     // Get the pre-configurated controller factory:
     myActionControllerFactory = ValidatorService.createActionManager();
 
@@ -32,3 +32,4 @@ fx-validation is an extension to fx-actions that lets you do just that: declarat
     stage.setTitle("fx-validation I18N Test");
     stage.setScene(scene);
     stage.show();
+```
