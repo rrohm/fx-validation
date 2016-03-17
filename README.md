@@ -5,6 +5,9 @@ fx-validation is an extension to fx-actions that lets you do just that: declarat
 
 
 ## Example
+
+This example show the loading and initialization of a FXML UI with internationalization. If you need I18N support, you might provide separate property bundles, one for the FXML UI and one for the validation messages.
+
 ```java
   @Override
   public void start(Stage stage) throws Exception {
