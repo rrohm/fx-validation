@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-
 package com.aeonium.aefxvalidationtest;
 
 import com.aeonium.javafx.actions.FXActionManager;
@@ -30,12 +29,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * An application class, illustrating validation with localized messages from
- * a resource bundle.
+ * An application class, illustrating validation with localized messages from a
+ * resource bundle.
  *
  * @author Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;
  */
 public class AeFXValidationI18NTest extends Application {
+
   private FXActionManager myActionControllerFactory;
 
   @Override
@@ -46,7 +46,9 @@ public class AeFXValidationI18NTest extends Application {
     // Load the FXMl with the controller factory
     FXMLLoader fxmlLoader = new FXMLLoader();
     fxmlLoader.setLocation(getClass().getResource("FXMLDocument.fxml"));
+    fxmlLoader.setResources(ResourceBundle.getBundle("com.aeonium.aefxvalidationtest.text"));
     fxmlLoader.setControllerFactory(myActionControllerFactory);
+    
     Parent root = (Parent) fxmlLoader.load();
     Scene scene = new Scene(root);
 
@@ -61,7 +63,7 @@ public class AeFXValidationI18NTest extends Application {
     myActionControllerFactory.initActions();
     ValidatorService.initialize(fxmlLoader.getController());
 
-    stage.setTitle("æFXValidation I18N Test");
+    stage.setTitle("fx-validation I18N Test");
     stage.setScene(scene);
     stage.show();
   }

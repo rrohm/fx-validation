@@ -18,8 +18,11 @@
  */
 package com.aeonium.javafx.validation;
 
+import com.aeonium.javafx.validation.annotations.FXNotNull;
 import com.aeonium.javafx.validation.annotations.FXNumber;
+import javafx.scene.control.Control;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.input.KeyEvent;
 
 /**
  * Checks whether input of a text control may be parsed as a double precision
@@ -31,13 +34,37 @@ import javafx.scene.control.TextInputControl;
  */
 public class NumberValidator extends FXAbstractValidator<TextInputControl, FXNumber> {
 
+  public NumberValidator() {
+    super();
+    this.eventTypes.add(KeyEvent.KEY_RELEASED);
+  }
+  
+//  public NumberValidator(Control control, FXNumber annotation) {
+//    super(control, annotation);
+//    Class<? extends Control>[] applicableFor = annotation.applicableFor();
+//    boolean isApplicable = false;
+//    for (Class<? extends Control> applicableFor1 : applicableFor) {
+//      if (applicableFor1.isInstance(control)) {
+//        isApplicable = true;
+//        break;
+//      }
+//    }
+//    if (!isApplicable) {
+//      throw new RuntimeException(annotation.annotationType().getName() + " is not applicable on " + control.getClass().getName());
+//    }
+//  }
+
+  
+  
   /**
    * Check whether the text input could get parsed as a number - validation gets
    * skipped if the control is either disabled or invisible.
    *
    * @param control The control
-   * @param annotation The annotation.
-   * @throws ValidationException
+   * @param annotation The annotation
+   * @throws ValidationException Throws an exception when validation fails. The
+   *                             message of the exception should be specific
+   *                             to the reason of failure.
    */
   @Override
   public void validate(TextInputControl control, FXNumber annotation) throws ValidationException {

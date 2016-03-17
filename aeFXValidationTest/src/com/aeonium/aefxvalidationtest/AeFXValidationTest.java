@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-
 package com.aeonium.aefxvalidationtest;
 
 import com.aeonium.javafx.actions.FXActionManager;
@@ -29,10 +28,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
+ * Example application for fx-validation tools. This is the simple version that
+ * is not internationalized. The current actual start class of the test
+ * application is <code>AeFXValidationI18NTest</code>.
  *
  * @author Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;
  */
 public class AeFXValidationTest extends Application {
+
   private FXActionManager myActionControllerFactory;
 
   @Override
@@ -52,7 +55,7 @@ public class AeFXValidationTest extends Application {
     myActionControllerFactory.initActions();
     ValidatorService.initialize(fxmlLoader.getController());
 
-    stage.setTitle("æFXValidation Test");
+    stage.setTitle("fx-validation Test");
     stage.setScene(scene);
     stage.show();
   }

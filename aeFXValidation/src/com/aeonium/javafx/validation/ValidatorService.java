@@ -206,7 +206,6 @@ public class ValidatorService {
     List<BooleanProperty> checkedProperties = checkedPropertyMap.get(controller);
 
 //    System.out.println("initialize " + controller);
-
     if (validatedControls != null) {
       for (Control control : validatedControls) {
         List<Label> labels = LabelService.getLabelsFor(control);
@@ -223,20 +222,10 @@ public class ValidatorService {
       }
     }
 
-//    System.out.println("CHECKED: ");
-//    for (Control checkedControl : checkedControls) {
-//      System.out.println("   " + checkedControl);
-//    }
-//    System.out.println("VALIDATED: ");
-//    for (Control validatedControl : validatedControls) {
-//      System.out.println("   " + validatedControl);
-//
-//    }
+    initializeCheckedControls(checkedControls, validatedControls);
 
-      initializeCheckedControls(checkedControls, validatedControls);
-
-      initializeCheckedProperties(checkedProperties, validatedControls);
-    }
+    initializeCheckedProperties(checkedProperties, validatedControls);
+  }
 
   /**
    * Iterate through a list of "checked" controls, i.e., of controls that have
@@ -331,7 +320,6 @@ public class ValidatorService {
 
           @Override
           protected boolean computeValue() {
-//            System.out.println("computeValue CheckedProperty " + this.bools);
             boolean result = true;
             for (ObservableBooleanValue b : bools) {
               result = result && b.get();
@@ -344,7 +332,9 @@ public class ValidatorService {
   }
 
   /**
-   * Process all validators that belong to the given controller.
+   * Process all validators that belong to the given controller - this is 
+   * failfast, the method quits validation on the first failure with an 
+   * exception. 
    *
    * @param controller The controller
    * @throws ValidationException The Exception signalling a failed validation
@@ -352,8 +342,6 @@ public class ValidatorService {
   public static void validate(Object controller) throws ValidationException {
 
     List<Control> validatedControls = validatedControlMap.get(controller);
-
-//    System.out.println("validate " + controller);
 
     for (Control validatedControl : validatedControls) {
       // ... for each validator - get validators

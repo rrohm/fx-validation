@@ -30,7 +30,8 @@ import javafx.scene.control.Control;
 import javafx.scene.input.MouseEvent;
 
 /**
- *
+ * Default handler for @FXValidationChecked annotations. 
+ * 
  * @author Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;
  */
 public class DefaultFXValidationCheckedHandler  implements AnnotationHandler<FXValidationChecked >{
@@ -43,7 +44,6 @@ public class DefaultFXValidationCheckedHandler  implements AnnotationHandler<FXV
         Control control = (Control) fieldContent;
         ValidatorService.registerCheckedControl(controller, control);
 
-        // TODO: create handler that causes all registered validated controls to get validated - at least for ButtonBase descendants
         if (control instanceof ButtonBase) {
           ButtonBase buttonBase = (ButtonBase) control;
           buttonBase.addEventFilter(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> {

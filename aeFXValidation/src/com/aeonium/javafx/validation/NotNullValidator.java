@@ -36,7 +36,6 @@ public class NotNullValidator extends FXAbstractValidator<Control, FXNotNull> {
   public NotNullValidator() {
     super();
     this.eventTypes.add(KeyEvent.KEY_RELEASED);
-//    this.eventTypes.add(MouseEvent.MOUSE_CLICKED);
   }
 
   public NotNullValidator(Control control, FXNotNull annotation) {

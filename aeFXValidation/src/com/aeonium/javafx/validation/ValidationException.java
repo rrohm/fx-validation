@@ -23,7 +23,7 @@ package com.aeonium.javafx.validation;
  *
  * @author Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;
  */
-class ValidationException extends Exception {
+public class ValidationException extends Exception {
 
   ValidationException(String msg) {
     super(msg);

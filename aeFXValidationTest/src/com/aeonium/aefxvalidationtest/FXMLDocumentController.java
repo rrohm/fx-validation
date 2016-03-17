@@ -16,10 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-
 package com.aeonium.aefxvalidationtest;
 
 import com.aeonium.javafx.validation.annotations.FXNotNull;
+import com.aeonium.javafx.validation.annotations.FXNumber;
 import com.aeonium.javafx.validation.annotations.FXRequired;
 import com.aeonium.javafx.validation.annotations.FXString;
 import com.aeonium.javafx.validation.annotations.FXValidationChecked;
@@ -46,24 +46,49 @@ import javafx.scene.control.TextField;
  */
 public class FXMLDocumentController implements Initializable {
 
+  /**
+   * This textfield requires any input. It is provided a custom message. 
+   */
   @FXML
   @FXRequired(required = true, message = "bitte eingeben!")
   private TextField tf1;
 
   /**
+   * If you need internationalized messages, provide a resource bundle to the 
+   * ValidatorService: 
    * This annotation uses a key from the resource bundle as message text.
    */
   @FXML
   @FXRequired(message = "validation.messages.required")
   private TextField tf2;
 
+  /**
+   * This textfield uses string validation with a minimum and a maximum length. 
+   */
   @FXML
   @FXString(minLength = 2, maxLength = 5)
   private TextField tf3;
 
+  /**
+   * This textfield requires input that can be parsed as a integer or float 
+   * value. The range of <code>double</code> is supported.
+   */
   @FXML
+  @FXNumber
   private TextField tf4;
 
+  /**
+   * This textfield requires the input to be a number within a given range. 
+   * You may specify minima and maxima also as double values.  
+   */
+  @FXML
+  @FXNumber(min = 5, max = 15)
+  private TextField tf6;
+
+  /**
+   * The visibility of this textfield can be toggled, so it is only validated
+   * conditionally when it is visible. 
+   */
   @FXML
   @FXString(minLength = 2, maxLength = 5)
   private TextField tfVisible2;
@@ -84,13 +109,25 @@ public class FXMLDocumentController implements Initializable {
   @FXRequired(message = "validation.messages.required")
   private TextField tf5;
 
+  /**
+   * "NotNull" Validation for ChoiceBoxes is supported.
+   */
   @FXML
   @FXNotNull
   private ChoiceBox chb1;
+  
+  /**
+   * "NotNull" Validation for ComboBoxes is supported.
+   */
   @FXML
   @FXNotNull
   private ComboBox cmb1;
+
+  /**
+   * "NotNull" Validation for DatePickers is supported.
+   */
   @FXML
+  @FXNotNull
   private DatePicker dp1;
 
   /**
