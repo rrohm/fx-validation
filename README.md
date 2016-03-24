@@ -11,6 +11,7 @@ At present, fx-validation supports these validation rules:
 - @FXNumber(min=?, max=?)
 - @FXString(minLength=?, maxLength=?)
 - @FXNotNull
+- @FXValidation // for custom validator classes
 
 ## Example
 
