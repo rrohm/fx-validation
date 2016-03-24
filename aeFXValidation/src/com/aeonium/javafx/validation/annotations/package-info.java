@@ -16,12 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-
 /**
  * This package contains the default validation constraint annotations of the
  * framework: {@link com.aeonium.javafx.validation.annotations.FXNotNull},
  * {@link com.aeonium.javafx.validation.annotations.FXRequired},
  * {@link com.aeonium.javafx.validation.annotations.FXString},
- * {@link com.aeonium.javafx.validation.annotations.FXNumber}.
+ * {@link com.aeonium.javafx.validation.annotations.FXNumber} and
+ * {@link com.aeonium.javafx.validation.annotations.FXValidation} for using
+ * custom validator classes.
  */
 package com.aeonium.javafx.validation.annotations;

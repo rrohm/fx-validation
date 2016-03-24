@@ -27,8 +27,8 @@ import javafx.event.EventType;
 import javafx.scene.control.Control;
 
 /**
- * Base class for the validator classes: Each validation case for a control
- * gets one instance of a validator.
+ * Base class for the validator classes: Each validation case for a control gets
+ * one instance of a validator.
  *
  * @author Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;
  * @param <T> The control base type
@@ -36,12 +36,15 @@ import javafx.scene.control.Control;
  */
 public abstract class FXAbstractValidator<T extends Control, A extends Annotation> {
 
-
   protected T control;
 
   protected A annotation;
 
+  /**
+   * Default constructor, is emtpy, may be overridden at need.
+   */
   public FXAbstractValidator() {
+    // nothing to do
   }
 
   public FXAbstractValidator(T control, A annotation) {
@@ -55,7 +58,6 @@ public abstract class FXAbstractValidator<T extends Control, A extends Annotatio
    */
   protected final BooleanProperty isValid = new SimpleBooleanProperty(false);
 
-
   /**
    * Every validation class must define which events shall trigger the
    * validation.
@@ -65,14 +67,20 @@ public abstract class FXAbstractValidator<T extends Control, A extends Annotatio
 
   /**
    * Validate the current data and/or state of control according to the
-   * validation constraints annotated at the field. This method is meant to
-   * set the value of the isValid property - also before it throws an exception.
+   * validation constraints annotated at the field. The contract of this method
+   * is:
+   * <ul>
+   * <li>First, evaluate the input, according to the validator logic.</li>
+   * <li>Then, set the {@link #isValid} property to the validation result (true
+   * or false).</li>
+   * <li>At last, if the {@link #isValid} property is false, throw a
+   * {@link ValidationException}.</li>
+   * </ul>
    *
    * @param control The control
    * @param annotation The annotation
    * @throws ValidationException Throws an exception when validation fails. The
-   *                             message of the exception should be specific
-   *                             to the reason of failure.
+   * message of the exception should be specific to the reason of failure.
    */
   public abstract void validate(T control, A annotation) throws ValidationException;
 
@@ -82,18 +90,15 @@ public abstract class FXAbstractValidator<T extends Control, A extends Annotatio
    * method to trigger validation.
    *
    * @throws ValidationException Throws an exception when validation fails. The
-   *                             message of the exception should be specific
-   *                             to the reason of failure.
+   * message of the exception should be specific to the reason of failure.
    */
   public void validate() throws ValidationException {
     this.validate(this.control, this.annotation);
   }
 
-
   public List<EventType> getEventTypes() {
     return eventTypes;
   }
-
 
   public BooleanProperty isValidProperty() {
     return isValid;

@@ -11,4 +11,5 @@ aeFXValidation/nbproject/private/**/*
 mounts.sh
 aeFXValidationTest/nbproject/UPDATED.TXT
 aeFXValidationTest/nbproject/jfx-impl_backup.xml
+aeFXValidationTest/hs_err_*
 

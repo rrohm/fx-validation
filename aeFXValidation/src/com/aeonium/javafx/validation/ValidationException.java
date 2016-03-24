@@ -19,13 +19,22 @@
 package com.aeonium.javafx.validation;
 
 /**
- * Base exception for signalling validation errors.
+ * Base exception for signalling validation errors – a validator derived from
+ * {@link FXAbstractValidator} must throw this exception in it's 
+ * {@link FXAbstractValidator#validate(javafx.scene.control.Control, java.lang.annotation.Annotation)
+ * } method, if the validation failed and the property
+ * {@link FXAbstractValidator#isValid} has been set to <code>false</code>.
  *
  * @author Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;
  */
 public class ValidationException extends Exception {
 
-  ValidationException(String msg) {
+  /**
+   * Construct a validation exception with a given message.
+   *
+   * @param msg The message.
+   */
+  public ValidationException(String msg) {
     super(msg);
   }
 

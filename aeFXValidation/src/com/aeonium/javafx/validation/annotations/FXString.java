@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-
 package com.aeonium.javafx.validation.annotations;
 
 import com.aeonium.javafx.validation.FXAbstractValidator;
@@ -34,10 +33,10 @@ import java.lang.annotation.Target;
  * <br>Example:
  * <pre>
  *
- {@literal @}FXML
- {@literal @}FXString(minLength = 2, maxLength = 5)
-  private TextField name;
-  *
+ * {@literal @}FXML
+ * {@literal @}FXString(minLength = 2, maxLength = 5)
+ * private TextField name;
+ *
  * </pre>
  *
  * @author Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;
@@ -58,17 +57,16 @@ public @interface FXString {
   public int minLength() default 0;
 
   /**
-   * A allowed maximum length for the string value of the annotated control.
-   * Set it to 0 ignore it, if not needed.
+   * A allowed maximum length for the string value of the annotated control. Set
+   * it to 0 ignore it, if not needed.
    *
    * @return The required minimum length.
    */
   public int maxLength() default 0;
 
   /**
-   * Regex pattern for validation - currently not supported.
+   * Regex pattern for validation.
    *
-   * @deprecated Not yet supported.
    * @return The regex validation pattern.
    */
   public String pattern() default "";
@@ -87,5 +85,12 @@ public @interface FXString {
    *
    * @return The Message
    */
-  public String messageMaxLength() default "Please enter max. %d characters.";;
+  public String messageMaxLength() default "Please enter max. %d characters.";
+
+  /**
+   * Message displayed when the pattern is not mathched.
+   *
+   * @return The Message
+   */
+  public String messagePattern() default "Please enter correct Input.";
 }

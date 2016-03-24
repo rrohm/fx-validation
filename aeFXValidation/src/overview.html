@@ -77,6 +77,14 @@ MA 02110-1301  USA
   private TextField tf4;
 
   /**
+   * This textfield is validated against a regular expresion and uses the
+   * <code>messagePattern</code> attribute.
+   */
+  {@literal @}FXML
+  {@literal @}FXString(pattern = "[a-z]*", messagePattern = "Lowercase only ;-)")
+  private TextField tf14;
+
+  /**
    * This textfield requires the input to be a number within a given range. 
    * You may specify minima and maxima also as double values.  
    */
@@ -104,6 +112,14 @@ MA 02110-1301  USA
   {@literal @}FXML
   {@literal @}FXNotNull
   private DatePicker dp1;
+
+  /**
+   * You can also apply custom validators to a control, and implement your own
+   * validation logic.
+   */
+  {@literal @}FXML
+  {@literal @}FXValidation(validation = CustomValidator.class)
+  private TextField tfCustom;
 
   /**
    * This button is the "submit" button of the form - therefore it must be

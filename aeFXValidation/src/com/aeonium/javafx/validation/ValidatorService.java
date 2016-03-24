@@ -24,6 +24,7 @@ import com.aeonium.javafx.validation.annotations.FXNotNull;
 import com.aeonium.javafx.validation.annotations.FXNumber;
 import com.aeonium.javafx.validation.annotations.FXRequired;
 import com.aeonium.javafx.validation.annotations.FXString;
+import com.aeonium.javafx.validation.annotations.FXValidation;
 import com.aeonium.javafx.validation.annotations.FXValidationChecked;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -58,8 +59,7 @@ public class ValidatorService {
   /**
    * CSS class for the error message labels.
    */
-  public static final String AEFX_VALIDATION_MSG   = "aefx-validation-message";
-
+  public static final String AEFX_VALIDATION_MSG = "aefx-validation-message";
 
   /**
    * Mapping of multiple validators to it's control.
@@ -95,9 +95,8 @@ public class ValidatorService {
     popupMap = new WeakHashMap<>();
   }
 
-
   /**
-   * @deprecated  Not implemented yet, work in progress.
+   * @deprecated Not implemented yet, work in progress.
    * @param targetControl TBD
    * @param validatedControls TBD
    */
@@ -116,24 +115,23 @@ public class ValidatorService {
   }
 
   /**
-   * Use this factory method to obtain an instance of the FXActionManager as
-   * a callback for loading an initializing FXML UIs. Main purpose of this
-   * factory method is to initialize the FXActionManager with the default
-   * handlers for the validatio annotations. If you need to create custom
-   * annotations and/or custom handlers, add the handlers in the way this method
-   * does:
+   * Use this factory method to obtain an instance of the FXActionManager as a
+   * callback for loading an initializing FXML UIs. Main purpose of this factory
+   * method is to initialize the FXActionManager with the default handlers for
+   * the validatio annotations. If you need to create custom annotations and/or
+   * custom handlers, add the handlers in the way this method does:
    * <pre>
-    FXActionManager fxActionManager = new FXActionManager();
-    fxActionManager.addHandler(FXRequired.class, new DefaultFXValidationHandler1());
-    fxActionManager.addHandler(FXString.class, new DefaultFXValidationHandler1());
-    fxActionManager.addHandler(FXNumber.class, new DefaultFXValidationHandler1());
-    fxActionManager.addHandler(FXNotNull.class, new DefaultFXValidationHandler1());
-    fxActionManager.addHandler(FXValidationChecked.class, new DefaultFXValidationCheckedHandler());
+   * FXActionManager fxActionManager = new FXActionManager();
+   * fxActionManager.addHandler(FXRequired.class, new DefaultFXValidationHandler());
+   * fxActionManager.addHandler(FXString.class, new DefaultFXValidationHandler());
+   * fxActionManager.addHandler(FXNumber.class, new DefaultFXValidationHandler());
+   * fxActionManager.addHandler(FXNotNull.class, new DefaultFXValidationHandler());
+   * fxActionManager.addHandler(FXValidationChecked.class, new DefaultFXValidationCheckedHandler());
    * </pre>
    *
    * @return The newly created and initialized action manager.
    */
-  public static FXActionManager createActionManager(){
+  public static FXActionManager createActionManager() {
     FXActionManager fxActionManager = new FXActionManager();
 
     initializeActionManager(fxActionManager);
@@ -148,14 +146,14 @@ public class ValidatorService {
    * @param fxActionManager The action manager instance
    */
   public static void initializeActionManager(FXActionManager fxActionManager) {
-    final DefaultFXValidationHandler1 defaultFXValidationHandler1 = new DefaultFXValidationHandler1();
+    final DefaultFXValidationHandler defaultFXValidationHandler1 = new DefaultFXValidationHandler();
     fxActionManager.addHandler(FXRequired.class, defaultFXValidationHandler1);
     fxActionManager.addHandler(FXString.class, defaultFXValidationHandler1);
     fxActionManager.addHandler(FXNumber.class, defaultFXValidationHandler1);
     fxActionManager.addHandler(FXNotNull.class, defaultFXValidationHandler1);
+    fxActionManager.addHandler(FXValidation.class, defaultFXValidationHandler1);
     fxActionManager.addHandler(FXValidationChecked.class, new DefaultFXValidationCheckedHandler());
   }
-
 
   public static List<FXAbstractValidator> getValidators(Control c) {
     return validatorMap.get(c);
@@ -174,14 +172,14 @@ public class ValidatorService {
    * The convenient way to initialize the node tree <i>and</i> the controller.
    * This method does actually the same like:
    * <pre>
-
-      FXActionManager actionManager = ValidatorService.createActionManager();
-
-      LabelService.initialize(parent);
-      actionManager.initActions(controller);
-      ValidatorService.initialize(controller);
-
-      *
+   *
+   * FXActionManager actionManager = ValidatorService.createActionManager();
+   *
+   * LabelService.initialize(parent);
+   * actionManager.initActions(controller);
+   * ValidatorService.initialize(controller);
+   *
+   *
    * </pre>
    *
    * @param parent The parent node to scan the tree down from.
@@ -193,7 +191,6 @@ public class ValidatorService {
     actionManager.initActions(controller);
     initialize(controller);
   }
-
 
   /**
    * Initialize validation in the given controller object.
@@ -234,7 +231,8 @@ public class ValidatorService {
    *
    * @param checkedControls The list of checked controls
    * @param validatedControls The list of validated controls
-   * @throws UnsupportedOperationException Thrown if control is not an instance of ButtonBase
+   * @throws UnsupportedOperationException Thrown if control is not an instance
+   * of ButtonBase
    */
   private static void initializeCheckedControls(List<Control> checkedControls, List<Control> validatedControls) throws UnsupportedOperationException {
     if (checkedControls != null) {
@@ -332,9 +330,9 @@ public class ValidatorService {
   }
 
   /**
-   * Process all validators that belong to the given controller - this is 
-   * failfast, the method quits validation on the first failure with an 
-   * exception. 
+   * Process all validators that belong to the given controller - this is
+   * failfast, the method quits validation on the first failure with an
+   * exception.
    *
    * @param controller The controller
    * @throws ValidationException The Exception signalling a failed validation
@@ -445,6 +443,13 @@ public class ValidatorService {
     return bundle;
   }
 
+  /**
+   * Set a resource bundle, if you want to use localized validation messages. In
+   * this case, use the key of your localized messages for the
+   * <code>message</code> attribute in the annotations.
+   *
+   * @param aBundle A resource bundle for the validation messages.
+   */
   public static void setBundle(ResourceBundle aBundle) {
     bundle = aBundle;
   }
