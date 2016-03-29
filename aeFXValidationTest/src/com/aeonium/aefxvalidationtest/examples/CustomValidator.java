@@ -26,26 +26,49 @@ import java.util.List;
 import javafx.scene.control.TextInputControl;
 
 /**
+ * This is a minimalistic example illustrating how to implement custom
+ * validation rules: This class validates text input simply in a customized 
+ * {@link #validate() } implementation. The contract of this method
+   * is:
+   * <ul>
+   * <li>First, evaluate the input, according to the validator logic.</li>
+   * <li>Then, set the {@link #isValid} property to the validation result (true
+   * or false).</li>
+   * <li>At last, if the {@link #isValid} property is false, throw a
+   * {@link ValidationException}.</li>
+   * </ul>
  *
  * @author Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;
  */
-public class CustomValidator extends FXAbstractValidator<TextInputControl, FXValidation>{
+public class CustomValidator extends FXAbstractValidator<TextInputControl, FXValidation> {
 
   /**
+   * Implement your custom validation logic. The contract of this method
+   * is:
+   * <ul>
+   * <li>First, evaluate the input, according to the validator logic.</li>
+   * <li>Then, set the {@link #isValid} property to the validation result (true
+   * or false).</li>
+   * <li>At last, if the {@link #isValid} property is false, throw a
+   * {@link ValidationException}.</li>
+   * </ul>
    * 
-   * @param control
-   * @param annotation
-   * @throws ValidationException 
+   * @param control The validated JavaFX control.
+   * @param annotation The annotation applied to the field that references the control.
+   * @throws ValidationException Throw a {@link ValidationException} if the input is invalid.
    */
   @Override
   public void validate(TextInputControl control, FXValidation annotation) throws ValidationException {
     List<String> validInput = Arrays.asList("Apples", "Peas", "Bananas");
-    
+
+    // Step 1 - Evaluate the input and set the isValid property accordingly:
     this.isValid.set(validInput.contains(control.getText()));
-    
+
+    // Step 2 - Tell the validation framework if the input is invalid - throw a 
+    // ValidationException with a proper message:
     if (!this.isValid.get()) {
       throw new ValidationException("Only Apples, Peas or Bananas!");
     }
   }
-  
+
 }
