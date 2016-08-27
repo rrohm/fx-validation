@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.WeakHashMap;
+import java.util.logging.Logger;
 import javafx.beans.Observable;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
@@ -51,6 +52,8 @@ import javafx.stage.PopupWindow;
  * @author Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;
  */
 public class ValidatorService {
+
+  private static final Logger LOG = Logger.getLogger(ValidatorService.class.getName());
 
   /**
    * CSS class for the erronous controls and corresponding labels.
@@ -284,12 +287,21 @@ public class ValidatorService {
 
   /**
    * Initialize checked boolean properties, i.e., bind their value to the
-   * combined result of all validation constraints.
+   * combined result of all validation constraints. This method is failfast,
+   * i.e. it throws an exception if you try to use checked properties in an FXML
+   * form without any validated controls that the property may get bound to. So,
+   * you need at least one control with some validation constraint in your
+   * controller. 
    *
    * @param checkedProperties The list of checked properties
-   * @param validatedControls The list of validated controles
+   * @param validatedControls The list of validated controls
    */
   private static void initializeCheckedProperties(List<BooleanProperty> checkedProperties, List<Control> validatedControls) {
+    if (validatedControls == null || validatedControls.isEmpty()) {
+      final String message = "Use of checked Property without validated Controls! You may want to check your Controller class.";
+      LOG.severe(message);
+      throw new RuntimeException(message);
+    }
     if (checkedProperties != null) {
 
       for (BooleanProperty checkedProperty : checkedProperties) {
