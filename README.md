@@ -14,7 +14,7 @@ At present, fx-validation supports these validation rules:
 - @FXValidation // for custom validator classes
 
 
-## Usage
+## How it works
 
 The validation rules are applied to the fields in the controller. A sample controller might look like this one from the aeFXValidationTest demo application: 
 
