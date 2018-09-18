@@ -43,14 +43,14 @@ import javafx.scene.input.MouseEvent;
  */
 public class LabelService {
 
-  private static final Map<Node, List<Label>> labelForNodeMap = new HashMap<>();
-  private static final Map<Label, Scene> labelToSceneMap = new HashMap<>();
-  private static final Map<Scene, List<Node>> nodeMap = new HashMap<>();
+  private static final Map<Node, List<Label>> LABELS_FOR_NODE_MAP = new HashMap<>();
+  private static final Map<Label, Scene> SCENE_TO_LABEL_MAP = new HashMap<>();
+  private static final Map<Scene, List<Node>> NODES_TO_SCENE_MAP = new HashMap<>();
 
   /**
    * This map keeps label lists for the scenes.
    */
-  private static final Map<Scene, List<Label>> labelMap = new HashMap<>();
+  private static final Map<Scene, List<Label>> LABELS_FOR_SCENE_MAP = new HashMap<>();
 
   /**
    * Find the first label that is a label for this control.
@@ -60,7 +60,7 @@ public class LabelService {
    * @deprecated Use getLabelsFor() for retrieving <b>all</b> Labels that may reference the node.
    */
   public static Label getLabelFor(Node node) {
-    List<Label> list = labelForNodeMap.get(node);
+    List<Label> list = LABELS_FOR_NODE_MAP.get(node);
     if (list != null) {
       if (list.size() > 0) {
         return list.get(0);
@@ -77,7 +77,7 @@ public class LabelService {
    * @return A list of labels that reference the node.
    */
   public static List<Label> getLabelsFor(Node node) {
-    return labelForNodeMap.get(node);
+    return LABELS_FOR_NODE_MAP.get(node);
   }
 
   /**
@@ -107,31 +107,23 @@ public class LabelService {
    */
   public static void initialize(Parent root) {
     Scene scene = root.getScene();
-    List<Node> list = nodeMap.get(scene);
+    List<Node> list = NODES_TO_SCENE_MAP.get(scene);
     if (list == null) {
       list = new ArrayList<>();
-      nodeMap.put(scene, list);
+      NODES_TO_SCENE_MAP.put(scene, list);
     }
-//    System.out.println("LabelService.initialize root: " + root);
-
-//    System.out.println("LabelService.initialize     : " + root.getChildrenUnmodifiable());
-//    for (Node childrenUnmodifiable : root.getChildrenUnmodifiable()) {
-//      System.out.println("      childrenUnmodifiable " + childrenUnmodifiable);
-//    }
 
     findLabels(scene, root.getChildrenUnmodifiable(), list);
 
-    List<Label> labelList = labelMap.get(scene);
+    List<Label> labelList = LABELS_FOR_SCENE_MAP.get(scene);
     for (Label label : labelList) {
-//      System.out.println("LabelService.initialize Label: " + label);
       final Node labelFor = label.getLabelFor();
       if (labelFor != null) {
-//        System.out.println("   for: " + labelFor);
 
-        List<Label> nodelabelList = labelForNodeMap.get(labelFor);
+        List<Label> nodelabelList = LABELS_FOR_NODE_MAP.get(labelFor);
         if (nodelabelList == null) {
           nodelabelList = new ArrayList<>();
-          labelForNodeMap.put(labelFor, nodelabelList);
+          LABELS_FOR_NODE_MAP.put(labelFor, nodelabelList);
         }
         nodelabelList.add(label);
 
@@ -158,23 +150,11 @@ public class LabelService {
    */
   private static void findLabels(ObservableList<Node> children, List<Node> list) {
     for (Node node : children) {
-//      System.out.println("findLabels: " + node);
-//      list.add(node); // not needed!
       if (node instanceof Label) {
         Label label = (Label) node;
-        final Scene sceneOf = getSceneOf(label);
-//System.out.println("label      " + sceneOf + "     ---------------    "  + label);
-        List<Label> labelList = labelMap.get(sceneOf);
-        if (labelList == null) {
-          labelList = new ArrayList<>();
-          labelMap.put(sceneOf, labelList);
-        }
-
-        if (!labelList.contains(label)) {
-          labelList.add(label);
-        }
+        final Scene scene = getSceneOf(label);
+        collectLabelInSceneMap(scene, label);
       }
-//      System.out.println("findLabels: " + node.getId());
 
       if (node instanceof Parent) {
         Parent parent = (Parent) node;
@@ -202,6 +182,18 @@ public class LabelService {
     }
   }
 
+  private static void collectLabelInSceneMap(final Scene scene, Label label) {
+    List<Label> labelList = LABELS_FOR_SCENE_MAP.get(scene);
+    if (labelList == null) {
+      labelList = new ArrayList<>();
+      LABELS_FOR_SCENE_MAP.put(scene, labelList);
+    }
+    
+    if (!labelList.contains(label)) {
+      labelList.add(label);
+    }
+  }
+
   /**
    * A variant of findLabels that tracks the scene in the parameter list -
    * normally each node in the scene should know it's scene, but ist seems like
@@ -213,22 +205,10 @@ public class LabelService {
    */
   private static void findLabels(Scene scene, ObservableList<Node> children, List<Node> list) {
     for (Node node : children) {
-//      System.out.println("findLabels: " + node);
-//      list.add(node); // not needed!
       if (node instanceof Label) {
         Label label = (Label) node;
-//System.out.println("label      " + scene + "     ---------------    "  + label);
-        List<Label> labelList = labelMap.get(scene);
-        if (labelList == null) {
-          labelList = new ArrayList<>();
-          labelMap.put(scene, labelList);
-        }
-
-        if (!labelList.contains(label)) {
-          labelList.add(label);
-        }
+        collectLabelInSceneMap(scene, label);
       }
-//      System.out.println("findLabels: " + node.getId());
 
       if (node instanceof Parent) {
         Parent parent = (Parent) node;
@@ -256,16 +236,13 @@ public class LabelService {
     }
   }
 
-  private static Scene getSceneOf(Label label) {
-    Scene scene = label.getScene();
+  private static Scene getSceneOf(Node node) {
+    Scene scene = node.getScene();
     if (scene == null) {
-//      System.out.println("LABEL WITH NULL SCENE: " + label);
-      Parent parent = label.getParent();
+      Parent parent = node.getParent();
       int n = 0;
       while (parent != null) {
-//        System.out.println("   PARENT " + n + ": " + parent);
         if (parent.getScene() != null) {
-//          System.out.println("   OK -> ");
           return parent.getScene();
         }
         n++;

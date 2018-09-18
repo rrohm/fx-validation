@@ -18,6 +18,7 @@
  */
 package com.aeonium.javafx.validation;
 
+import com.aeonium.javafx.validation.exceptions.ValidationException;
 import com.aeonium.javafx.validation.annotations.FXString;
 import java.util.regex.Pattern;
 import javafx.scene.control.TextInputControl;

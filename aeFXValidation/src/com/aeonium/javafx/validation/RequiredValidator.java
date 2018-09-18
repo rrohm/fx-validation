@@ -18,6 +18,7 @@
  */
 package com.aeonium.javafx.validation;
 
+import com.aeonium.javafx.validation.exceptions.ValidationException;
 import com.aeonium.javafx.validation.annotations.FXRequired;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyEvent;
@@ -45,8 +46,8 @@ public class RequiredValidator extends FXAbstractValidator<TextInputControl, FXR
    * either disabled or invisible.
    *
    * @param control The text input control
-   * @throws com.aeonium.javafx.validation.ValidationException The exception to
-   * be thrown when the control input is not valid.
+   * @throws com.aeonium.javafx.validation.exceptions.ValidationException The
+   * exception to be thrown when the control input is not valid.
    */
   @Override
   public void validate(TextInputControl control, FXRequired annotation) throws ValidationException {

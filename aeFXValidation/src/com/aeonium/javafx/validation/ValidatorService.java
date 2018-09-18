@@ -18,6 +18,7 @@
  */
 package com.aeonium.javafx.validation;
 
+import com.aeonium.javafx.validation.exceptions.ValidationException;
 import com.aeonium.javafx.actions.FXActionManager;
 import com.aeonium.javafx.utils.LabelService;
 import com.aeonium.javafx.validation.annotations.FXNotNull;
@@ -252,32 +253,12 @@ public class ValidatorService {
             List<FXAbstractValidator> validators = validatorMap.get(validatedControl);
 
             for (FXAbstractValidator validator : validators) {
-//              System.out.println("INIT " + validator);
               validatorsOK.add(validator.isValid);
             }
           }
 
           // create collective binding for checked controls
-          buttonBase.disableProperty().bind(new BooleanBinding() {
-
-            List<ObservableBooleanValue> bools = validatorsOK;
-
-            {
-              Observable[] bb = {};
-              bb = bools.toArray(bb);
-              super.bind(bb);
-            }
-
-            @Override
-            protected boolean computeValue() {
-//              System.out.println("\ncomputeValue CheckedControl " + this.bools);
-              boolean result = true;
-              for (ObservableBooleanValue b : bools) {
-                result = result && b.get();
-              }
-              return !result;
-            }
-          });
+          buttonBase.disableProperty().bind(new AllBooleansBinding(validatorsOK).not());
         } else {
           throw new UnsupportedOperationException("ValidatorService supports only descendants of ButtonBase as checked controls.");
         }
@@ -291,7 +272,7 @@ public class ValidatorService {
    * i.e. it throws an exception if you try to use checked properties in an FXML
    * form without any validated controls that the property may get bound to. So,
    * you need at least one control with some validation constraint in your
-   * controller. 
+   * controller.
    *
    * @param checkedProperties The list of checked properties
    * @param validatedControls The list of validated controls
@@ -318,25 +299,7 @@ public class ValidatorService {
           }
         }
 
-        checkedProperty.bind(new BooleanBinding() {
-
-          List<ObservableBooleanValue> bools = validatorsOK;
-
-          {
-            Observable[] bb = {};
-            bb = bools.toArray(bb);
-            super.bind(bb);
-          }
-
-          @Override
-          protected boolean computeValue() {
-            boolean result = true;
-            for (ObservableBooleanValue b : bools) {
-              result = result && b.get();
-            }
-            return result;
-          }
-        });
+        checkedProperty.bind(new AllBooleansBinding(validatorsOK));
       }
     }
   }
@@ -464,5 +427,47 @@ public class ValidatorService {
    */
   public static void setBundle(ResourceBundle aBundle) {
     bundle = aBundle;
+  }
+
+  private static class BooleanValidatorsBinding extends BooleanBinding {
+
+    private final List<ObservableBooleanValue> bools;
+
+    public BooleanValidatorsBinding(List<ObservableBooleanValue> validatorsOK) {
+      this.bools = validatorsOK;
+      Observable[] bb = {};
+      bb = bools.toArray(bb);
+      super.bind(bb);
+    }
+
+    @Override
+    protected boolean computeValue() {
+      boolean result = true;
+      for (ObservableBooleanValue b : bools) {
+        result = result && b.get();
+      }
+      return !result;
+    }
+  }
+
+  private static class AllBooleansBinding extends BooleanBinding {
+
+    private final List<ObservableBooleanValue> bools;
+
+    public AllBooleansBinding(List<ObservableBooleanValue> validatorsOK) {
+      this.bools = validatorsOK;
+      Observable[] bb = {};
+      bb = bools.toArray(bb);
+      super.bind(bb);
+    }
+
+    @Override
+    protected boolean computeValue() {
+      boolean result = true;
+      for (ObservableBooleanValue b : bools) {
+        result = result && b.get();
+      }
+      return result;
+    }
   }
 }

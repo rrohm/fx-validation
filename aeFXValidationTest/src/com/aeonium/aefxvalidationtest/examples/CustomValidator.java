@@ -19,8 +19,8 @@
 package com.aeonium.aefxvalidationtest.examples;
 
 import com.aeonium.javafx.validation.FXAbstractValidator;
-import com.aeonium.javafx.validation.ValidationException;
 import com.aeonium.javafx.validation.annotations.FXValidation;
+import com.aeonium.javafx.validation.exceptions.ValidationException;
 import java.util.Arrays;
 import java.util.List;
 import javafx.scene.control.TextInputControl;

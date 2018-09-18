@@ -13,3 +13,6 @@ aeFXValidationTest/nbproject/UPDATED.TXT
 aeFXValidationTest/nbproject/jfx-impl_backup.xml
 aeFXValidationTest/hs_err_*
 
+aeFXValidation/.scannerwork/
+aeFXValidation/build-with-sonar.sh
+aeFXValidation/sonar-project.properties

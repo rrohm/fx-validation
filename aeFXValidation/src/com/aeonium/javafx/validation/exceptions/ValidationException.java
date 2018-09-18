@@ -16,7 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package com.aeonium.javafx.validation;
+package com.aeonium.javafx.validation.exceptions;
+
+import com.aeonium.javafx.validation.FXAbstractValidator;
 
 /**
  * Base exception for signalling validation errors – a validator derived from

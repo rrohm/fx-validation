@@ -18,6 +18,7 @@
  */
 package com.aeonium.javafx.validation;
 
+import com.aeonium.javafx.validation.exceptions.ValidationException;
 import com.aeonium.javafx.actions.FXActionManager;
 import com.aeonium.javafx.actions.annotations.AnnotationHandler;
 import com.aeonium.javafx.utils.LabelService;
@@ -138,7 +139,7 @@ public class DefaultFXValidationHandler implements AnnotationHandler<Annotation>
 
       control.focusedProperty().addListener((observable, oldValue, newValue) -> {
         // if control aquires focus: get out, only validate if focus lost.
-        if (newValue == true) {
+        if (newValue) {
           return;
         }
         doValidate(validator, control, validation);

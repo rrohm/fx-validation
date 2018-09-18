@@ -32,9 +32,8 @@ import javafx.scene.control.Control;
  * it's class with the {@link FXValidation#validation()} attibute of this
  * annotation.
  * <p>
- * You may use the (currently still marked as experimental) attribute
- * {@link FXValidation#applicableFor()} to limit the use of your validator to a
- * number of control classes.
+ * You may use the attribute {@link FXValidation#applicableFor()} to limit the
+ * use of your validator to a number of control classes.
  *
  * @author Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;
  */
@@ -46,7 +45,11 @@ public @interface FXValidation {
   public Class<? extends FXAbstractValidator> validation();
 
   /**
-   * @deprecated Experimental
+   * Array containing the set of controls that this validation may be applied
+   * to. Use an empty array for "any control". This is valid, since interpreting
+   * an empty array as "this validation cannot be applied to any control" would
+   * not make sense.
+   *
    * @return List of all aplicable Control subtypes
    */
   public Class<? extends Control>[] applicableFor() default {};

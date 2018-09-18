@@ -18,6 +18,7 @@
  */
 package com.aeonium.javafx.validation;
 
+import com.aeonium.javafx.validation.exceptions.ValidationException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;

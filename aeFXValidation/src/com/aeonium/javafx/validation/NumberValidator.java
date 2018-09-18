@@ -18,9 +18,8 @@
  */
 package com.aeonium.javafx.validation;
 
-import com.aeonium.javafx.validation.annotations.FXNotNull;
+import com.aeonium.javafx.validation.exceptions.ValidationException;
 import com.aeonium.javafx.validation.annotations.FXNumber;
-import javafx.scene.control.Control;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyEvent;
 
@@ -38,22 +37,6 @@ public class NumberValidator extends FXAbstractValidator<TextInputControl, FXNum
     super();
     this.eventTypes.add(KeyEvent.KEY_RELEASED);
   }
-  
-//  public NumberValidator(Control control, FXNumber annotation) {
-//    super(control, annotation);
-//    Class<? extends Control>[] applicableFor = annotation.applicableFor();
-//    boolean isApplicable = false;
-//    for (Class<? extends Control> applicableFor1 : applicableFor) {
-//      if (applicableFor1.isInstance(control)) {
-//        isApplicable = true;
-//        break;
-//      }
-//    }
-//    if (!isApplicable) {
-//      throw new RuntimeException(annotation.annotationType().getName() + " is not applicable on " + control.getClass().getName());
-//    }
-//  }
-
   
   
   /**
@@ -90,7 +73,7 @@ public class NumberValidator extends FXAbstractValidator<TextInputControl, FXNum
       if (annotation.max() != Double.MAX_VALUE) {
         valid = valid && (n.doubleValue() <= annotation.max());
       }
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
       // nothing to do, validator remains invalid.
     }
     this.isValid.set(valid);

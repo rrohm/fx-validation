@@ -18,6 +18,8 @@
  */
 package com.aeonium.javafx.validation;
 
+import com.aeonium.javafx.validation.exceptions.ValidationException;
+import com.aeonium.javafx.validation.exceptions.FXValidatorException;
 import com.aeonium.javafx.validation.annotations.FXNotNull;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBoxBase;
@@ -49,7 +51,7 @@ public class NotNullValidator extends FXAbstractValidator<Control, FXNotNull> {
       }
     }
     if (!isApplicable) {
-      throw new RuntimeException(annotation.annotationType().getName() + " is not applicable on " + control.getClass().getName());
+      throw new FXValidatorException(annotation.annotationType().getName() + " is not applicable on " + control.getClass().getName());
     }
   }
 
