@@ -28,6 +28,7 @@ import com.aeonium.javafx.validation.annotations.FXRequired;
 import com.aeonium.javafx.validation.annotations.FXString;
 import com.aeonium.javafx.validation.annotations.FXValidation;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -116,7 +117,18 @@ public class DefaultFXValidationHandler implements AnnotationHandler<Annotation>
         }
       }
 
-      FXAbstractValidator validator = (FXAbstractValidator) Class.forName(name).newInstance();
+//      FXAbstractValidator validator = (FXAbstractValidator) Class.forName(name).newInstance();
+      FXAbstractValidator validator;
+      final Class classForName = Class.forName(name);
+      if (classForName.getEnclosingClass() == controller.getClass()) {
+        Constructor constructor =  classForName.getDeclaredConstructor(controller.getClass());
+        validator = (FXAbstractValidator) constructor.newInstance(controller);
+        
+      } else {
+        Constructor constructor =  classForName.getConstructor();
+        validator = (FXAbstractValidator) constructor.newInstance();
+      }
+      
       validator.setAnnotation(validation);
       validator.setControl(control);
 
@@ -192,7 +204,11 @@ public class DefaultFXValidationHandler implements AnnotationHandler<Annotation>
         doValidate(validator, control, validation);
       }
 
-    } catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException | InstantiationException ex) {
+    } catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException | InstantiationException | InvocationTargetException ex) {
+      Logger.getLogger(DefaultFXValidationHandler.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (NoSuchMethodException ex) {
+      Logger.getLogger(DefaultFXValidationHandler.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SecurityException ex) {
       Logger.getLogger(DefaultFXValidationHandler.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
