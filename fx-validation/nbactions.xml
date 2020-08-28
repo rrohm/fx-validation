@@ -9,4 +9,15 @@
                 <goal>sonar:sonar</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-clean package w/o Tests</actionName>
+            <displayName>clean package w/o Tests</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>package</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </action>
     </actions>

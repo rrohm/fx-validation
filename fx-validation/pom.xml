@@ -60,6 +60,26 @@
       </plugin>
       
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.2</version>
+        <configuration>
+          <argLine>${surefireArgLine}</argLine>
+          
+          <!--Necessary for running single class tests: -->
+          <!--<forkCount>0</forkCount>-->
+
+          <!--<forkCount>1</forkCount>-->
+          <!--<reuseForks>true</reuseForks>-->
+
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.22.2</version>      
+      </plugin>
+      
+      <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.5</version>
@@ -101,6 +121,25 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>fx-actions</artifactId>
       <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>fx-unit</artifactId>
+      <version>1.1.0-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    <!--Custom provider and engine for Junit 5 to surefire-->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.6.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.6.2</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
