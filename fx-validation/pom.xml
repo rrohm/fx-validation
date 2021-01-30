@@ -26,7 +26,7 @@
   </properties>
   
   <organization>
-    <name>Aeonium Software Systems</name>
+    <name>aeonium software systems UG (haftungsbeschränkt)</name>
     <url>https://www.aeonium-systems.de/</url>
   </organization>
 
@@ -34,7 +34,7 @@
     <developer>
       <name>Robert Rohm</name>
       <email>info@aeonium-systems.de</email>
-      <organization>Aeonium Software Systems</organization>
+      <organization>aeonium software systems UG (haftungsbeschränkt)</organization>
       <organizationUrl>https://www.aeonium-systems.de/</organizationUrl>
     </developer>
   </developers>
