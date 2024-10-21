@@ -20,4 +20,28 @@
                 <skipTests>true</skipTests>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-deploy w/o tests aeonium-intern</actionName>
+            <displayName>deploy w/o tests aeonium-intern</displayName>
+            <goals>
+                <goal>deploy</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+<!--                <altDeploymentRepository>aeonium-intern::default::http://192.168.2.133:8080/repository/aeonium-intern</altDeploymentRepository>-->
+            </properties>
+        </action>
+        <action>
+            <actionName>test.single</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>process-test-classes</goal>
+                <goal>test</goal>
+            </goals>
+            <properties>
+                <test>${packageClassName}</test>
+            </properties>
+        </action>
     </actions>

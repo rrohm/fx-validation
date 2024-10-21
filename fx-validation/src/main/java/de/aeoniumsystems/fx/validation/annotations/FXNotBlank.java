@@ -31,13 +31,13 @@ import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.Control;
 
 /**
- * Marks a selection control, e.g., ChoiceBox, as not allowed to have a null
- * value. This constraint is applicable on all controls that support a value
+ * Marks a text control, e.g., TextField, as not allowed to have blank
+ * text property. This constraint is applicable on all controls that support a text
  * property. Currently that is:
  *
  * <ul>
- * <li>ChoiceBox</li>
- * <li>ComboBoxBase and its descendants</li>
+ * <li>TextField</li>
+ * <li>TextArea</li>
  * </ul>
  *
  * @author Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;
@@ -45,7 +45,7 @@ import javafx.scene.control.Control;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FXNotNull {
+public @interface FXNotBlank {
 
   /**
    * The default validator is {@link NotNullValidator}, you should not need to
@@ -53,7 +53,7 @@ public @interface FXNotNull {
    *
    * @return The validator class.
    */
-  public Class<? extends FXAbstractValidator<?, ?>> validation() default NotNullValidator.class;
+  public Class<? extends FXAbstractValidator> validation() default NotNullValidator.class;
 
   /**
    * Currently, this annotation and it's validator may be used with

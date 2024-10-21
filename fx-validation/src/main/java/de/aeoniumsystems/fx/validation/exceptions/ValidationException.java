@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2024 Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,6 +30,8 @@ import de.aeoniumsystems.fx.validation.FXAbstractValidator;
  * @author Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;
  */
 public class ValidationException extends Exception {
+
+  private static final long serialVersionUID = 1L;
 
   /**
    * Construct a validation exception with a given message.

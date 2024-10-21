@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2024 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,9 +35,8 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 
 /**
- * The label service provides a lookup map for labels placed in several scenes
- * that are assigned to controls via labelFor attribute. The label service is
- * also used by the validator service.
+ * The label service provides a lookup map for labels placed in several scenes that are assigned to controls via
+ * labelFor attribute. The label service is also used by the validator service.
  *
  * @author Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;
  * @version 1.1
@@ -60,10 +59,11 @@ public class LabelService {
    * @return The first Label mapped to the node, or null
    * @deprecated Use getLabelsFor() for retrieving <b>all</b> Labels that may reference the node.
    */
+  @Deprecated
   public static Label getLabelFor(Node node) {
     List<Label> list = LABELS_FOR_NODE_MAP.get(node);
     if (list != null) {
-      if (list.size() > 0) {
+      if (!list.isEmpty()) {
         return list.get(0);
       }
       return null;
@@ -74,8 +74,9 @@ public class LabelService {
 
   /**
    * Get all labels that reference the given node.
+   *
    * @param node The node to search labels for.
-   * @return A list of labels that reference the node.
+   * @return A list of labels that reference the node, may return <code>null</code>.
    */
   public static List<Label> getLabelsFor(Node node) {
     return LABELS_FOR_NODE_MAP.get(node);
@@ -85,11 +86,9 @@ public class LabelService {
    * Initialize the labels in the given scene, i.e.,:
    * <ul>
    * <li>find all labels in the scene, </li>
-   * <li>loop over the list of found labels and check for a 'Label
-   *   for'-reference, </li>
-   * <li>and, if found, put it in the internal map, set cursor style and add a
-   *   click handler that lets the user focus the node by clicking it's
-   *   label.</li>
+   * <li>loop over the list of found labels and check for a 'Label for'-reference, </li>
+   * <li>and, if found, put it in the internal map, set cursor style and add a click handler that lets the user focus
+   * the node by clicking it's label.</li>
    * <li></li>
    * </ul>
    *
@@ -142,13 +141,13 @@ public class LabelService {
   }
 
   /**
-   * Iterate through the children and their children, and collect all label
-   * nodes in the internal labels map. The method checks whether a label is
-   * already an element of the list and inserts the label only once. Hence, the
-   * method can be executed several times on the same scene/node.
+   * Iterate through the children and their children, and collect all label nodes in the internal labels map. The method
+   * checks whether a label is already an element of the list and inserts the label only once. Hence, the method can be
+   * executed several times on the same scene/node.
    *
-   * <p>Special treatment is required in this method for TabPane, since the Tab
-   * instances are not elements or the children collection. </p>
+   * <p>
+   * Special treatment is required in this method for TabPane, since the Tab instances are not elements or the children
+   * collection. </p>
    *
    * @param children List of child nodes
    * @param list .
@@ -171,7 +170,7 @@ public class LabelService {
 
         for (Tab tab : tabPane.getTabs()) {
           if (tab.getContent() instanceof Parent) {
-            Parent p = (Parent)tab.getContent();
+            Parent p = (Parent) tab.getContent();
             findLabels(p.getChildrenUnmodifiable(), list);
           }
         }
@@ -193,16 +192,15 @@ public class LabelService {
       labelList = new ArrayList<>();
       LABELS_FOR_SCENE_MAP.put(scene, labelList);
     }
-    
+
     if (!labelList.contains(label)) {
       labelList.add(label);
     }
   }
 
   /**
-   * A variant of findLabels that tracks the scene in the parameter list -
-   * normally each node in the scene should know it's scene, but ist seems like
-   * node in a TitledPane does not.
+   * A variant of findLabels that tracks the scene in the parameter list - normally each node in the scene should know
+   * it's scene, but ist seems like node in a TitledPane does not.
    *
    * @param scene The current scene
    * @param children Observable list of child nodes
@@ -225,7 +223,7 @@ public class LabelService {
 
         for (Tab tab : tabPane.getTabs()) {
           if (tab.getContent() instanceof Parent) {
-            Parent p = (Parent)tab.getContent();
+            Parent p = (Parent) tab.getContent();
             findLabels(scene, p.getChildrenUnmodifiable(), list);
           }
         }

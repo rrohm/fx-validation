@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2024 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import javafx.scene.control.TextInputControl;
 
 /**
  * Mark a text-input field as required, i.e., it must have a non-empty input
@@ -37,7 +38,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FXRequired {
 
-  public Class<? extends FXAbstractValidator> validation() default RequiredValidator.class;
+  public Class<? extends FXAbstractValidator<TextInputControl, FXRequired>> validation() default RequiredValidator.class;
 
   public boolean required() default false;
 

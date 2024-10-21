@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2024 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -59,6 +59,8 @@ import javafx.scene.input.KeyEvent;
  */
 public class DefaultFXValidationHandler implements AnnotationHandler<Annotation> {
 
+  private static final Logger LOG = Logger.getLogger(DefaultFXValidationHandler.class.getName());
+
   private FXActionManager manager;
 
   /**
@@ -92,6 +94,7 @@ public class DefaultFXValidationHandler implements AnnotationHandler<Annotation>
    * @param validation The annotation.
    */
   @Override
+  @SuppressWarnings("unchecked")
   public void handle(Object controller, Field field, Annotation validation) {
     String name = null;
 
@@ -117,13 +120,13 @@ public class DefaultFXValidationHandler implements AnnotationHandler<Annotation>
       }
 
       FXAbstractValidator validator;
-      final Class classForName = Class.forName(name);
+      final Class<?> classForName = Class.forName(name);
       if (classForName.getEnclosingClass() == controller.getClass()) {
-        Constructor constructor =  classForName.getDeclaredConstructor(controller.getClass());
+        Constructor<?> constructor =  classForName.getDeclaredConstructor(controller.getClass());
         validator = (FXAbstractValidator) constructor.newInstance(controller);
         
       } else {
-        Constructor constructor =  classForName.getConstructor();
+        Constructor<?> constructor =  classForName.getConstructor();
         validator = (FXAbstractValidator) constructor.newInstance();
       }
       
@@ -136,7 +139,7 @@ public class DefaultFXValidationHandler implements AnnotationHandler<Annotation>
       // Registering control and controller - necessary for later binding
       FXValidatorService.registerValidatedControl(controller, control);
 
-      List<EventType> eventTypes = validator.getEventTypes();
+      List<EventType<?>> eventTypes = validator.getEventTypes();
 
       // Common validation triggers: 
       control.disabledProperty().addListener((observable, oldValue, newValue) -> {
@@ -157,15 +160,13 @@ public class DefaultFXValidationHandler implements AnnotationHandler<Annotation>
 
       // Specific validation triggers
       // Text-Input: use change events and focus changes
-      if (control instanceof TextInputControl) {
-        TextInputControl textInputControl = (TextInputControl) control;
+      if (control instanceof TextInputControl textInputControl) {
 
         textInputControl.textProperty().addListener((observable, oldValue, newValue) -> {
           doValidate(validator, control, validation);
         });
 
-      } else if (control instanceof ChoiceBox) {
-        ChoiceBox choiceBox = (ChoiceBox) control;
+      } else if (control instanceof ChoiceBox<?> choiceBox) {
         choiceBox.valueProperty().addListener((observable, oldValue, newValue) -> {
           doValidate(validator, control, validation);
         });
@@ -175,8 +176,7 @@ public class DefaultFXValidationHandler implements AnnotationHandler<Annotation>
           }
         });
 
-      } else if (control instanceof ComboBoxBase) {
-        ComboBoxBase c = (ComboBoxBase) control;
+      } else if (control instanceof ComboBoxBase<?> c) {
         c.valueProperty().addListener((observable, oldValue, newValue) -> {
           doValidate(validator, control, validation);
         });
@@ -229,38 +229,41 @@ public class DefaultFXValidationHandler implements AnnotationHandler<Annotation>
 
       List<Label> labels = LabelService.getLabelsFor(control);
 
-      // If there are no labels: bail out, because there would be no chance to 
+      // If there are no labels: warn, because there would be no chance to 
       // display a control-specific message (at least not in this version)
       if (labels == null) {
-        throw new NullPointerException("There are no labels for the control " + control.getId() + ". \nYou need to add a Label and set its labelFor property to the control.");
-      }
-
-      for (Label label : labels) {
-        if (label.getStyleClass().contains(FXValidatorService.AEFX_VALIDATION_MSG)) {
-          label.setVisible(false);
-          label.setManaged(false);
-        } else {
-          label.getStyleClass().remove(FXValidatorService.AEFX_VALIDATION_ERROR);
+        LOG.log(Level.WARNING, "There are no labels for the control {0}. \nYou need to add a Label and set its labelFor property to the control.", control.getId());
+      } else {
+        for (Label label : labels) {
+          if (label.getStyleClass().contains(FXValidatorService.AEFX_VALIDATION_MSG)) {
+            label.setVisible(false);
+            label.setManaged(false);
+          } else {
+            label.getStyleClass().remove(FXValidatorService.AEFX_VALIDATION_ERROR);
+          }
         }
       }
+
     } else {
       if (!control.getStyleClass().contains(FXValidatorService.AEFX_VALIDATION_ERROR)) {
         control.getStyleClass().add(FXValidatorService.AEFX_VALIDATION_ERROR);
       }
 
       List<Label> labels = LabelService.getLabelsFor(control);
-      for (Label label : labels) {
-//        if (label != null) {
-        if (errormessage != null && label.getStyleClass().contains(FXValidatorService.AEFX_VALIDATION_MSG)) {
-          label.setVisible(true);
-          label.setManaged(true);
-          label.setText(errormessage);
-        } else if (!label.getStyleClass().contains(FXValidatorService.AEFX_VALIDATION_ERROR)) {
-          label.getStyleClass().add(FXValidatorService.AEFX_VALIDATION_ERROR);
+      
+      if (labels == null) {
+        LOG.log(Level.WARNING, "There are no labels for the control {0}. \nYou need to add a Label and set its labelFor property to the control.", control.getId());
+      } else {
+        for (Label label : labels) {
+          if (errormessage != null && label.getStyleClass().contains(FXValidatorService.AEFX_VALIDATION_MSG)) {
+            label.setVisible(true);
+            label.setManaged(true);
+            label.setText(errormessage);
+          } else if (!label.getStyleClass().contains(FXValidatorService.AEFX_VALIDATION_ERROR)) {
+            label.getStyleClass().add(FXValidatorService.AEFX_VALIDATION_ERROR);
+          }
         }
-//        }
       }
-      //            Logger.getLogger(DefaultFXValidationHandler.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
 
@@ -301,51 +304,46 @@ public class DefaultFXValidationHandler implements AnnotationHandler<Annotation>
 
   private String getClassName(Annotation validation) throws IllegalAccessException {
     String name = null;
-    if (validation instanceof FXRequired) {
-      FXRequired fXRequired = (FXRequired) validation;
+    if (validation instanceof FXRequired fXRequired) {
       try {
         Method method = fXRequired.getClass().getMethod("validation");
-        Class result = (Class) method.invoke(fXRequired, (Object[]) null);
+        Class<?> result = (Class) method.invoke(fXRequired, (Object[]) null);
         name = result.getName();
       } catch (NoSuchMethodException | SecurityException | InvocationTargetException ex) {
         Logger.getLogger(DefaultFXValidationHandler.class.getName()).log(Level.SEVERE, null, ex);
       }
 
-    } else if (validation instanceof FXString) {
-      FXString fXString = (FXString) validation;
+    } else if (validation instanceof FXString fXString) {
       try {
         Method method = fXString.getClass().getMethod("validation");
-        Class result = (Class) method.invoke(fXString, (Object[]) null);
+        Class<?> result = (Class) method.invoke(fXString, (Object[]) null);
         name = result.getName();
       } catch (NoSuchMethodException | SecurityException | InvocationTargetException ex) {
         Logger.getLogger(DefaultFXValidationHandler.class.getName()).log(Level.SEVERE, null, ex);
       }
 
-    } else if (validation instanceof FXNotNull) {
-      FXNotNull fXNotNull = (FXNotNull) validation;
+    } else if (validation instanceof FXNotNull fXNotNull) {
       try {
         Method method = fXNotNull.getClass().getMethod("validation");
-        Class result = (Class) method.invoke(fXNotNull, (Object[]) null);
+        Class<?> result = (Class) method.invoke(fXNotNull, (Object[]) null);
         name = result.getName();
       } catch (NoSuchMethodException | SecurityException | InvocationTargetException ex) {
         Logger.getLogger(DefaultFXValidationHandler.class.getName()).log(Level.SEVERE, null, ex);
       }
 
-    } else if (validation instanceof FXNumber) {
-      FXNumber fXNumber = (FXNumber) validation;
+    } else if (validation instanceof FXNumber fXNumber) {
       try {
         Method method = fXNumber.getClass().getMethod("validation");
-        Class result = (Class) method.invoke(fXNumber, (Object[]) null);
+        Class<?> result = (Class) method.invoke(fXNumber, (Object[]) null);
         name = result.getName();
       } catch (NoSuchMethodException | SecurityException | InvocationTargetException ex) {
         Logger.getLogger(DefaultFXValidationHandler.class.getName()).log(Level.SEVERE, null, ex);
       }
 
-    } else if (validation instanceof FXValidation) {
-      FXValidation fXValidation = (FXValidation) validation;
+    } else if (validation instanceof FXValidation fXValidation) {
       try {
         Method method = fXValidation.getClass().getMethod("validation");
-        Class result = (Class) method.invoke(fXValidation, (Object[]) null);
+        Class<?> result = (Class) method.invoke(fXValidation, (Object[]) null);
         name = result.getName();
       } catch (NoSuchMethodException | SecurityException | InvocationTargetException ex) {
         Logger.getLogger(DefaultFXValidationHandler.class.getName()).log(Level.SEVERE, null, ex);

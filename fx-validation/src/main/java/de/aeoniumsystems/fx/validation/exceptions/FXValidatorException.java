@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2024 Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,8 @@ package de.aeoniumsystems.fx.validation.exceptions;
  * @author Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;
  */
 public class FXValidatorException extends RuntimeException {
+
+  private static final long serialVersionUID = 1L;
 
   public FXValidatorException(String string) {
     super(string);

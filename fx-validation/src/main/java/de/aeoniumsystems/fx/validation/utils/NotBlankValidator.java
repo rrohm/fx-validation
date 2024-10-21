@@ -16,31 +16,35 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package de.aeoniumsystems.fx.validation;
+package de.aeoniumsystems.fx.validation.utils;
 
+import de.aeoniumsystems.fx.validation.*;
 import de.aeoniumsystems.fx.validation.exceptions.ValidationException;
 import de.aeoniumsystems.fx.validation.exceptions.FXValidatorException;
 import de.aeoniumsystems.fx.validation.annotations.FXNotNull;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBoxBase;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.control.Control;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 /**
- * Checks (currently only) choiceboxes and comboboxes whether they have a valid
- * selection value not equaling null. Validation gets skipped if the control is
- * either disabled or invisible.
+ * Checks (currently only) TextFields and TeextAreas whether they have a text property value that is not null, not empty
+ * and not blank. Validation gets skipped if the control is either disabled or invisible.
  *
  * @author Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;
  */
-public class NotNullValidator extends FXAbstractValidator<Control, FXNotNull> {
+public class NotBlankValidator extends FXAbstractValidator<Control, FXNotNull> {
 
-  public NotNullValidator() {
+  private static final Logger LOG = Logger.getLogger(NotBlankValidator.class.getName());
+
+  public NotBlankValidator() {
     super();
     this.eventTypes.add(KeyEvent.KEY_RELEASED);
   }
 
-  public NotNullValidator(Control control, FXNotNull annotation) {
+  public NotBlankValidator(Control control, FXNotNull annotation) {
     super(control, annotation);
     Class<? extends Control>[] applicableFor = annotation.applicableFor();
     boolean isApplicable = false;
@@ -69,11 +73,16 @@ public class NotNullValidator extends FXAbstractValidator<Control, FXNotNull> {
 
     boolean valid = false;
 
-    if (control instanceof ChoiceBox<?> choiceBox) {
-      valid = choiceBox.getValue() != null;
+    if (control instanceof TextField) {
+      TextField textField = (TextField) control;
+      valid = textField.getText() != null && !textField.getText().isBlank();
 
-    } else if (control instanceof ComboBoxBase<?> comboBoxBase) {
-      valid = comboBoxBase.getValue() != null;
+    } else if (control instanceof TextArea) {
+      TextArea textArea = (TextArea) control;
+      valid = textArea.getText() != null && !textArea.getText().isBlank();
+
+    } else {
+      LOG.log(Level.WARNING, "{0} is applied to an unsupported control type: {1}", new Object[]{this.getClass().getSimpleName(), control.getClass().getName()});
     }
 
     this.isValid.set(valid);

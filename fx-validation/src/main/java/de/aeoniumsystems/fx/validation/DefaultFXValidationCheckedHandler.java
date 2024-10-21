@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2024 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -61,6 +61,9 @@ public class DefaultFXValidationCheckedHandler  implements AnnotationHandler<FXV
         final BooleanProperty booleanProperty = (BooleanProperty) fieldContent;
         FXValidatorService.registerCheckedProperty(controller, booleanProperty);
 
+      } else if (fieldContent == null){
+        throw new NullPointerException("FXValidationChecked annotation on an uninitialized field: " + field.getName());
+        
       } else {
         throw new UnsupportedOperationException("FXValidationChecked annotation is not supported for fields of type " + field.getClass().getCanonicalName());
       }

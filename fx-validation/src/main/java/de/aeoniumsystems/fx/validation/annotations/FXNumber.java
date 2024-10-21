@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2024 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,6 +27,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import javafx.scene.control.TextInputControl;
 
 /**
  * Marks a text input field as numeric input.
@@ -38,7 +39,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FXNumber{
 
-  public Class<? extends FXAbstractValidator> validation() default NumberValidator.class;
+  public Class<? extends FXAbstractValidator<TextInputControl, FXNumber>> validation() default NumberValidator.class;
 
   public double min() default Double.MIN_VALUE;
 

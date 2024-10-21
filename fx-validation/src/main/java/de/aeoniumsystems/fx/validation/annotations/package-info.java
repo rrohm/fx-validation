@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2024 Robert Rohm&lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,11 +18,13 @@
  */
 /**
  * This package contains the default validation constraint annotations of the
- * framework: {@link com.aeonium.javafx.validation.annotations.FXNotNull},
- * {@link com.aeonium.javafx.validation.annotations.FXRequired},
- * {@link com.aeonium.javafx.validation.annotations.FXString},
- * {@link com.aeonium.javafx.validation.annotations.FXNumber} and
- * {@link com.aeonium.javafx.validation.annotations.FXValidation} for using
+ * framework: 
+ * {@link de.aeoniumsystems.fx.validation.annotations.FXNotBlank},
+ * {@link de.aeoniumsystems.fx.validation.annotations.FXNotNull},
+ * {@link de.aeoniumsystems.fx.validation.annotations.FXRequired},
+ * {@link de.aeoniumsystems.fx.validation.annotations.FXString},
+ * {@link de.aeoniumsystems.fx.validation.annotations.FXNumber} and
+ * {@link de.aeoniumsystems.fx.validation.annotations.FXValidation} for using
  * custom validator classes.
  */
 package de.aeoniumsystems.fx.validation.annotations;

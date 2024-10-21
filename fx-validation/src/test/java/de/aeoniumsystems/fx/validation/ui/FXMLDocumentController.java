@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2024 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -123,14 +123,14 @@ public class FXMLDocumentController implements Initializable {
    */
   @FXML
   @FXNotNull
-  private ChoiceBox chb1;
+  private ChoiceBox<?> chb1;
 
   /**
    * "NotNull" Validation for ComboBoxes is supported.
    */
   @FXML
   @FXNotNull
-  private ComboBox cmb1;
+  private ComboBox<?> cmb1;
 
   /**
    * "NotNull" Validation for DatePickers is supported.

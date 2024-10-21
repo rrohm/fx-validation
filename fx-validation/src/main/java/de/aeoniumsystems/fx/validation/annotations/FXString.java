@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2024 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import javafx.scene.control.TextInputControl;
 
 /**
  * Define constraints for a string input field, e.g., minimum length and/or
@@ -46,7 +47,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FXString {
 
-  public Class<? extends FXAbstractValidator> validation() default StringValidator.class;
+  public Class<? extends FXAbstractValidator<TextInputControl, FXString>> validation() default StringValidator.class;
 
   /**
    * A required minimum length for the string value of the annotated control.

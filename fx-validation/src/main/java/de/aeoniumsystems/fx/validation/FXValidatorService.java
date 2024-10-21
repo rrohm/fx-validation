@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
+ * Copyright (C) 2024 Robert Rohm &lt;r.rohm@aeonium-systems.de&gt;.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -71,11 +71,12 @@ public class FXValidatorService {
   /**
    * Mapping of multiple validators to it's control.
    */
-  private static final Map<Control, List<FXAbstractValidator>> validatorMap;
+  private static final Map<Control, List<FXAbstractValidator<?, ?>>> validatorMap;
 
   /**
    * @deprecated Experimental - not for use!
    */
+  @Deprecated
   private static final Map<Control, Popup> popupMap;
 
   /**
@@ -107,15 +108,16 @@ public class FXValidatorService {
    * @param targetControl TBD
    * @param validatedControls TBD
    */
+  @Deprecated
   public static void bindValidators(Control targetControl, Control... validatedControls) {
     System.out.println("ValidatorService.bindValidators " + targetControl);
     for (Control vc : validatedControls) {
-      List<FXAbstractValidator> list = validatorMap.get(vc);
+      List<FXAbstractValidator<?, ?>> list = validatorMap.get(vc);
       if (list == null) {
         continue;
       }
 
-      for (FXAbstractValidator validator : list) {
+      for (FXAbstractValidator<?, ?> validator : list) {
         System.out.println("bind:  " + targetControl + " -> " + vc + " | " + validator);
       }
     }
@@ -150,7 +152,7 @@ public class FXValidatorService {
    * @param additionalHandlers
    * @return 
    */
-  public static FXActionManager createActionManager(Map<Class, AnnotationHandler> additionalHandlers) {
+  public static FXActionManager createActionManager(Map<Class<?>, AnnotationHandler<?>> additionalHandlers) {
     FXActionManager fxActionManager = new FXActionManager(additionalHandlers);
 
     addValidationHandlers(fxActionManager);
@@ -174,12 +176,12 @@ public class FXValidatorService {
     fxActionManager.addHandler(FXValidationChecked.class, new DefaultFXValidationCheckedHandler());
   }
 
-  public static List<FXAbstractValidator> getValidators(Control c) {
+  public static List<FXAbstractValidator<?, ?>> getValidators(Control c) {
     return validatorMap.get(c);
   }
 
-  public static List<FXAbstractValidator> getValidators(Control... c) {
-    List<FXAbstractValidator> list = new ArrayList<>();
+  public static List<FXAbstractValidator<?, ?>> getValidators(Control... c) {
+    List<FXAbstractValidator<?, ?>> list = new ArrayList<>();
 
     for (Control control : c) {
       list.addAll(validatorMap.get(control));
@@ -265,9 +267,9 @@ public class FXValidatorService {
           // go through validated controls and bind enabledProperty
           for (Control validatedControl : validatedControls) {
             // ... for each validator - get validators
-            List<FXAbstractValidator> validators = validatorMap.get(validatedControl);
+            List<FXAbstractValidator<?, ?>> validators = validatorMap.get(validatedControl);
 
-            for (FXAbstractValidator validator : validators) {
+            for (FXAbstractValidator<?, ?> validator : validators) {
               validatorsOK.add(validator.isValid);
             }
           }
@@ -307,9 +309,9 @@ public class FXValidatorService {
         // go through validated controls and bind enabledProperty
         for (Control validatedControl : validatedControls) {
           // ... for each validator - get validators
-          List<FXAbstractValidator> validators = validatorMap.get(validatedControl);
+          List<FXAbstractValidator<?, ?>> validators = validatorMap.get(validatedControl);
 
-          for (FXAbstractValidator validator : validators) {
+          for (FXAbstractValidator<?, ?> validator : validators) {
             validatorsOK.add(validator.isValid);
           }
         }
@@ -333,9 +335,9 @@ public class FXValidatorService {
 
     for (Control validatedControl : validatedControls) {
       // ... for each validator - get validators
-      List<FXAbstractValidator> validators = validatorMap.get(validatedControl);
+      List<FXAbstractValidator<?, ?>> validators = validatorMap.get(validatedControl);
 
-      for (FXAbstractValidator validator : validators) {
+      for (FXAbstractValidator<?, ?> validator : validators) {
         validator.validate();
       }
     }
@@ -347,6 +349,7 @@ public class FXValidatorService {
    * @param control The control
    * @param annotation The annotation that should provide the hint message
    */
+  @Deprecated
   static void hideHint(Control control, Annotation annotation) {
     Popup popup = popupMap.get(control);
     if (popup != null && popup.isShowing()) {
@@ -359,6 +362,7 @@ public class FXValidatorService {
    * @param control The control to show the hint for.
    * @param annotation The annotation providing the text message
    */
+  @Deprecated
   public static void showHint(Control control, Annotation annotation) {
     Popup popup = popupMap.get(control);
     if (popup == null) {
@@ -371,8 +375,8 @@ public class FXValidatorService {
     popup.show(control, localToScene.getX(), localToScene.getY());
   }
 
-  public static void registerValidator(Control c, FXAbstractValidator validator) {
-    List<FXAbstractValidator> list = validatorMap.get(c);
+  public static void registerValidator(Control c, FXAbstractValidator<?, ?> validator) {
+    List<FXAbstractValidator<?, ?>> list = validatorMap.get(c);
 
     if (list == null) {
       list = new ArrayList<>();
@@ -382,8 +386,8 @@ public class FXValidatorService {
     list.add(validator);
   }
 
-  public static void unregisterValidator(Control c, FXAbstractValidator validator) {
-    List<FXAbstractValidator> list = validatorMap.get(c);
+  public static void unregisterValidator(Control c, FXAbstractValidator<?, ?> validator) {
+    List<FXAbstractValidator<?, ?>> list = validatorMap.get(c);
 
     if (list != null) {
       list.remove(validator);

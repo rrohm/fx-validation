@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.aeonium-systems</groupId>
   <artifactId>fx-validation</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.2.1-SNAPSHOT</version>
   <packaging>jar</packaging>
     
   
@@ -20,9 +20,9 @@
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>8</maven.compiler.source>
-    <maven.compiler.target>8</maven.compiler.target>
-    <javafx.version>11.0.1</javafx.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <javafx.version>17.0.8</javafx.version>
   </properties>
   
   <organization>
@@ -44,10 +44,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version>
-        <configuration>
-          <additionalOptions>--frames</additionalOptions>
-        </configuration>
+        <version>3.10.1</version>
         
         <executions>
           <execution>
@@ -62,7 +59,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.2</version>
+        <version>3.5.1</version>
         <configuration>
           <argLine>${surefireArgLine}</argLine>
           
@@ -76,14 +73,15 @@
       </plugin>
       <plugin>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.22.2</version>      
+        <version>3.5.1</version>      
       </plugin>
       
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.5</version>
-        <configuration>
+        <version>0.8.12</version>
+        <configuration>         
+          <propertyName>surefireArgLine</propertyName>
           <excludes>javafx.*,com.sun.*</excludes>
         </configuration>
         <executions>
@@ -98,14 +96,24 @@
             <goals>
               <goal>report</goal>
             </goals>
-          </execution>
+          </execution>   
         </executions>
       </plugin>
       
       <plugin>
         <groupId>org.sonarsource.scanner.maven</groupId>
         <artifactId>sonar-maven-plugin</artifactId>
-        <version>3.6.1.1688</version>
+        <version>4.0.0.4121</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+        <configuration>
+          <compilerArgs>
+            <arg>-Xlint</arg>
+          </compilerArgs>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -120,25 +128,25 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>fx-actions</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>fx-unit</artifactId>
-      <version>1.1.0-SNAPSHOT</version>
+      <version>1.1.1-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
     <!--Custom provider and engine for Junit 5 to surefire-->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.6.2</version>
+      <version>5.11.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.6.2</version>
+      <version>5.11.2</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
